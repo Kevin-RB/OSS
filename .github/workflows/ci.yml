@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
     push:
@@ -9,8 +9,10 @@ on:
             - main
     workflow_dispatch:  # Add this to enable manual triggering
 jobs:
-    build:
+    build-and-deploy:
+        name: Run tests
         runs-on: self-hosted
+        environment: Production
 
         steps:
         - name: Checkout code
@@ -21,5 +23,42 @@ jobs:
           with:
               node-version: 22
               cache: 'npm'
-        - name: Install dependencies
+              cache-dependency-path: |
+                ./backend package-lock.json
+                ./frontend package-lock.json
+
+        - name: Install Backend Dependencies
+          working-directory: ./backend
           run: npm ci
+
+        - name: Run Backend Tests
+          working-directory: ./backend
+          env:
+            MONGO_URI: ${{ secrets.MONGO_URI }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
+            PORT: ${{ secrets.PORT }}
+          run: npm test
+        
+        - name: Deploy Backend changes
+          if: success()
+          working-directory: ./backend
+          run: |
+            echo "${{secrets.PROD}}" > .env
+            pm2 reload backend || pm2 start backend
+          
+        - name: Install Frontend Dependencies
+          working-directory: ./frontend
+          run: npm ci
+        
+        - name: Build Frontend
+          working-directory: ./frontend
+          run: | 
+           npm run build
+
+        - name: Deploy application
+          if: success() && github.ref == 'refs/heads/main'
+          run: |
+            echo "${{ secrets.PROD }}" > ./backend/.env
+            pm2 reload backend || pm2 start backend
+            pm2 reload frontend || pm2 start frontend
+            pm2 save
