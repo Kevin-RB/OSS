@@ -10,7 +10,7 @@ on:
     workflow_dispatch:  # Add this to enable manual triggering
 jobs:
     build-and-deploy:
-        name: Run tests
+        name: Test, Build and Deploy
         runs-on: self-hosted
         environment: Production
 
