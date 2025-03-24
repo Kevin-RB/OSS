@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import axiosInstance from '../axiosConfig';
+import { axiosAuthInstance } from '../axiosConfig';
 import { AxiosError } from 'axios';
 import { FieldError } from '../components/field-error';
 
 export default function Product() {
     const [formData, setFormData] = useState({
         name: '',
-        price: '',
+        price: 0,
         description: '',
         imageUrl: ''
     });
@@ -15,16 +15,12 @@ export default function Product() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axiosInstance.post('/api/products', formData);
-
-            if (!response.ok) {
-                throw new Error('Failed to add product');
-            }
+            await axiosAuthInstance.post('/api/products', formData);
 
             // Clear form after successful submission
             setFormData({
                 name: '',
-                price: '',
+                price: 0,
                 description: '',
                 imageUrl: ''
             });
