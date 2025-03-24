@@ -1,12 +1,12 @@
 import { useAuth } from '../context/AuthContext';
-import axiosInstance from '../axiosConfig';
+import { axiosAuthInstance } from '../axiosConfig';
 
 const TaskList = ({ tasks, setTasks, setEditingTask }) => {
   const { user } = useAuth();
 
   const handleDelete = async (taskId) => {
     try {
-      await axiosInstance.delete(`/api/tasks/${taskId}`, {
+      await axiosAuthInstance.delete(`/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setTasks(tasks.filter((task) => task._id !== taskId));
