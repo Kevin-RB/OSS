@@ -1,6 +1,5 @@
 
 const Product = require('../models/Product');
-const Product = require('../models/Product');
 const { productCreation } = require('../validation/product-validation');
 
 const createProduct = async (req, res) => {
