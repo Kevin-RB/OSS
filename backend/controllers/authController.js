@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
         const result = UserRegistrations.safeParse({ name, email, password });
 
         if (!result.success) {
-            return res.status(400).json({ message: 'Validation error', error: result.error.format()});
+            return res.status(400).json({ message: 'Validation error', error: result.error.format() });
         }
 
         const userExists = await User.findOne({ email });
@@ -33,7 +33,7 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password))) {
-            res.json({ id: user.id, name: user.name, email: user.email, token: generateToken(user.id) });
+            res.json({ id: user.id, name: user.name, email: user.email, role: user.role, token: generateToken(user.id) });
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
         }
