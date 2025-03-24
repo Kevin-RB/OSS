@@ -37,7 +37,7 @@ const Register = () => {
             aria-errormessage='Name error'
             className="w-full p-2 border rounded"
           />
-          <FieldError error={error?.["Name"]?._errors} />
+          <FieldError error={error?.["name"]?._errors} />
         </div>
 
         <div>
