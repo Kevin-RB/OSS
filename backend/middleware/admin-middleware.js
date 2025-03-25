@@ -2,7 +2,7 @@
 const verifyAdmin = async (req, res, next) => {
     try {
         const user = req.user;
-        if(user?.role === 'admin') {
+        if(user?.role[0] === 'admin') {
             next();
         }
         else {
