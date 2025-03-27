@@ -6,7 +6,7 @@ import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import Product from './pages/Product';
 import { ProtectedRoute } from './components/protected-route';
-import { AuthRedirect } from './components/auth-redirect';
+import { roles } from './utils/roles';
 
 function App() {
   return (
@@ -14,15 +14,16 @@ function App() {
       <Navbar />
       <Routes>
         <Route index element={<Navigate to={"/login"} />} />
-        <Route element={<AuthRedirect />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-        <Route element={<ProtectedRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<ProtectedRoute allowedRoles={[roles.user, roles.admin]} />}>
           <Route path="/product" element={<Product />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/tasks" element={<Tasks />} />
         </Route>
+        <Route element={<ProtectedRoute allowedRoles={[roles.user]} />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/unauthorized" element={<p>Un authorized access!</p>} />
       </Routes>
     </Router>
   );
