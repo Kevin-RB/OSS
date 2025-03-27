@@ -10,7 +10,7 @@ export default function Product() {
 
     const handleSearch = async (searchTerm) => {
         try {
-            const response = await axiosAuthInstance.get(`/api/products?name=${searchTerm}`);
+            const response = await axiosAuthInstance.get(`/api/products/?name=${searchTerm}`);
             setProducts(response.data);
         } catch (error) {
             console.error('Error searching products:', error);
@@ -19,12 +19,10 @@ export default function Product() {
 
     useEffect(() => {
         const name = searchParams.get('name');
-        if (name) {
-            handleSearch(name);
-        }
+        handleSearch(name);
     }, [searchParams]);
 
-    async function fetchProducts(){
+    async function fetchProducts() {
         try {
             const response = await axiosAuthInstance.get('/api/products');
             setProducts(response.data);
@@ -32,11 +30,11 @@ export default function Product() {
             console.error('Error fetching products:', error);
             setError('Error fetching products');
         }
-    } 
+    }
 
     useEffect(() => {
         fetchProducts();
-    },[]);
+    }, []);
 
 
     return (
