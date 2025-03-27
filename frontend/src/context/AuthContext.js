@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     if (user) {
       setUser(JSON.parse(user));
     }
-  }, []);
+  },[]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
