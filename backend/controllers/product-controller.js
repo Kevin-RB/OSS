@@ -78,16 +78,16 @@ const updateProductById = async (req, res) => {
         const { productId } = req.params;
         // get the product details from the request body
         const { name, price, description, imageUrl } = req.body;
-        // find the product by id
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
         // validate the request body
         const result = productCreation.safeParse({ name, price, description, imageUrl });
         // if the validation fails, return a 400 response with the error message
         if (!result.success) {
             return res.status(400).json({ message: 'Validation error', error: result.error.format() });
+        }
+        // find the product by id
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
         }
         // update the product
         const updatedProduct = await Product.findByIdAndUpdate(
