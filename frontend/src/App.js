@@ -7,6 +7,7 @@ import Tasks from './pages/Tasks';
 import Product from './pages/Product';
 import { ProtectedRoute } from './components/protected-route';
 import { roles } from './utils/roles';
+import { ProductDetail } from './pages/product-detail';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route element={<ProtectedRoute allowedRoles={[roles.user, roles.admin]} />}>
           <Route path="/product" element={<Product />} />
+          <Route path='/product/:id' element={<ProductDetail />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={[roles.user]} />}>
           <Route path="/profile" element={<Profile />} />
