@@ -7,17 +7,19 @@ export function ProductDetail() {
     const [product, setProduct] = useState({});
     const [error, setError] = useState(null);
 
-    async function getProductDetail() {
-        try {
-            const response = await axiosAuthInstance.get(`/api/products/${id}`);
-            setProduct(response.data)
-        } catch (error) {
-            console.error(error);
-            setError(error);
-        }
-    }
 
-    useEffect(() => { getProductDetail() }, []);
+    useEffect(() => {
+        async function getProductDetail() {
+            try {
+                const response = await axiosAuthInstance.get(`/api/products/${id}`);
+                setProduct(response.data)
+            } catch (error) {
+                console.error(error);
+                setError(error);
+            }
+        }
+        getProductDetail()
+    }, [id]);
 
     if (error) { return <div>Error: {error}</div> }
 
