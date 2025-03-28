@@ -43,7 +43,7 @@ export default function Product() {
 
 
     return (
-        <div>
+        <div className='container mx-auto'>
             <div className="max-w-md mx-auto mt-10">
                 <input
                     type="search"
@@ -55,9 +55,11 @@ export default function Product() {
             </div>
             {error && <div className="text-red-500">Error: {error}</div>}
             {user?.roles[0] === roles.admin && (
-                <button className="" onClick={() => { navigate("admin", { relative: "path" }) }}>
-                    Admin panel
-                </button>
+                <div className="flex justify-end mt-4">
+                    <button className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => { navigate("admin", { relative: "path" }) }}>
+                        Admin panel
+                    </button>
+                </div>
             )}
             <ProductCatalog products={products} />
         </div>

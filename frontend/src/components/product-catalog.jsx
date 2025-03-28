@@ -3,7 +3,7 @@ import { ProductCard } from "./product-card";
 export function ProductCatalog({ products }) {
 
     return (
-        <section className="container mx-auto grid grid-cols-2 md:grid-cols-3 gap-4" >
+        <section className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4" >
             {products.map((product) => (
                 <ProductCard
                     id={product._id}
