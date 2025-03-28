@@ -9,6 +9,7 @@ import { ProtectedRoute } from './components/protected-route';
 import { roles } from './utils/roles';
 import { ProductDetail } from './pages/product-detail';
 import { ProductAdmin } from './pages/product-admin';
+import { ProductEdit } from './components/product-edit';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/product/:id' element={<ProductDetail />} />
           <Route element={<ProtectedRoute allowedRoles={[roles.admin]} />}>
             <Route path="/product/admin" element={<ProductAdmin />} />
+            <Route path="/product/admin/update" element={<ProductEdit />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={[roles.user]} />}>

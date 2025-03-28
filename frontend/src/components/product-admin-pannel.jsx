@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function ProductAdminPannel({ productList }) {
 
     return (
@@ -21,6 +23,9 @@ export function ProductAdminPannel({ productList }) {
                             <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Edit</span>
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Delete</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,13 +45,22 @@ export function ProductAdminPannel({ productList }) {
                                     {product.imageUrl}
                                 </td>
                                 <td scope="col" className="px-6 py-4 text-right">
-                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                    <Link to={`update`} state={{ ...product }} relative="path" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
+                                </td>
+                                <td scope="col" className="px-6 py-4 text-right">
+                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <dialog >
+                <p>Greetings, one and all!</p>
+                <form method="dialog">
+                    <button>OK</button>
+                </form>
+            </dialog>
         </section>
     )
 }
