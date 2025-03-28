@@ -10,7 +10,7 @@ export function ProductCatalog({ products }) {
                     name={product.name}
                     price={product.price}
                     imageUrl={product.imageUrl}
-                    key={product.id}
+                    key={product._id}
                 />
             ))}
         </section>

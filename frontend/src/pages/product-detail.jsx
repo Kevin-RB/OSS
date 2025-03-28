@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosAuthInstance } from "../axiosConfig";
+import { useCart } from "../context/cartContext";
 
 export function ProductDetail() {
     const { id } = useParams();
+    const { addToCart, cart } = useCart();
     const [product, setProduct] = useState({});
     const [error, setError] = useState(null);
 
-
+    const isProductInCart = cart.some(product => product._id === id);
+    console.log(isProductInCart);
     useEffect(() => {
         async function getProductDetail() {
             try {
@@ -21,6 +24,10 @@ export function ProductDetail() {
         getProductDetail()
     }, [id]);
 
+    function onAddToCartHandler() {
+        addToCart(product);
+    }
+
     if (error) { return <div>Error: {error}</div> }
 
     return (
@@ -33,8 +40,8 @@ export function ProductDetail() {
                         <span class="text-3xl font-bold text-white">${product.price}.00</span>
                     </div>
                     <p class="mb-3 font-normal text-white dark:text-gray-10000">{product.description}</p>
-                    <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Add to cart
+                    <button disabled={isProductInCart} onClick={onAddToCartHandler} class=" disabled:bg-zinc-500 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        {isProductInCart ? "Item added to the cart" : "Add to cart"}
                     </button>
                 </div>
             </div>
