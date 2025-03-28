@@ -55,17 +55,10 @@ jobs:
           run: | 
            npm run build
 
-        # - name: Deploy application
-        #   if: success() && github.ref == 'refs/heads/main'
-        #   run: |
-        #     echo "${{ secrets.PROD }}" > ./backend/.env
-        #     pm2 reload backend || pm2 start backend
-        #     pm2 reload frontend || pm2 start frontend
-        #     pm2 save
         - name: Deploy application
+          if: success() && (github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.base_ref == 'main'))
           run: |
-            echo "Deploying regardless of conditions"
-            echo "GitHub Ref: ${{ github.ref }}"
-            echo "Repository: ${{ github.repository }}"
-            env:
-              GITHUB_CONTEXT: ${{ toJson(github) }}
+            echo "${{ secrets.PROD }}" > ./backend/.env
+            pm2 reload backend || pm2 start backend
+            pm2 reload frontend || pm2 start frontend
+            pm2 save
