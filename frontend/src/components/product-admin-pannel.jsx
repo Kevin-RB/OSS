@@ -1,6 +1,14 @@
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-export function ProductAdminPannel({ productList }) {
+export function ProductAdminPannel({ productList, onDeleteProduct }) {
+    const modalRef = useRef(null);
+    const [product, setProduct] = useState({});
+
+    async function deleteProduct(id) {
+        onDeleteProduct(id);
+        modalRef.current.close();
+    }
 
     return (
         <section>
@@ -48,18 +56,23 @@ export function ProductAdminPannel({ productList }) {
                                     <Link to={`update`} state={{ ...product }} relative="path" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                 </td>
                                 <td scope="col" className="px-6 py-4 text-right">
-                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
+                                    <button onClick={() => {
+                                        setProduct(product)
+                                        modalRef.current.showModal()
+                                    }} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <dialog >
-                <p>Greetings, one and all!</p>
-                <form method="dialog">
-                    <button>OK</button>
-                </form>
+            <dialog ref={modalRef} className="dialog p-6 bg-white rounded-md shadow-md w-96">
+                <h1 className="text-2xl mb-6">You are about to delete an item</h1>
+                <p className="text-zinc-600 mb-4 text-center">This action is irreversible</p>
+                <div className="flex gap-2">
+                    <button className="w-full px-2 py-1 bg-red-500 text-white rounded-md" onClick={() => { deleteProduct(product._id) }}>Delete</button>
+                    <button className="w-full px-2 py-1 text-zinc-600 border border-zinc-700 rounded-md" onClick={() => { modalRef.current.close() }}>Cancel</button>
+                </div>
             </dialog>
         </section>
     )

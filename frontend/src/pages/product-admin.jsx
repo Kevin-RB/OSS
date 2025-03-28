@@ -15,18 +15,27 @@ export function ProductAdmin() {
         }
     }
 
+    async function deleteProduct(id) {
+        try {
+            await axiosAuthInstance.delete(`/api/products/${id}`);
+            setProducts(products.filter(product => product._id !== id));
+        } catch (error) {
+            window.alert('Error deleting product:', error);
+        }
+    }
+
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    if(error) {
+    if (error) {
         return <div>Error: {error}</div>
     }
 
     return (
         <section className="container mx-auto max-w-4xl space-y-4">
             <h1 className="font-semibold text-xl text-zinc-800">Product Admin</h1>
-            <ProductAdminPannel productList={products} />
+            <ProductAdminPannel productList={products} onDeleteProduct={deleteProduct} />
         </section>
     );
 }
