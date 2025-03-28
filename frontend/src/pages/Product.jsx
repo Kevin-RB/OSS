@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { axiosAuthInstance } from '../axiosConfig';
 import { ProductCatalog } from '../components/product-catalog';
 import { useAuth } from '../context/AuthContext';
@@ -56,9 +56,9 @@ export default function Product() {
             {error && <div className="text-red-500">Error: {error}</div>}
             {user?.roles[0] === roles.admin && (
                 <div className="flex justify-end mt-4">
-                    <button className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => { navigate("admin", { relative: "path" }) }}>
+                    <Link to={"admin"} relative='path' className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Admin panel
-                    </button>
+                    </Link>
                 </div>
             )}
             <ProductCatalog products={products} />

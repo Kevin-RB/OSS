@@ -17,7 +17,7 @@ export function ProductDetail() {
         }
     }
 
-    useEffect(() => { getProductDetail() });
+    useEffect(() => { getProductDetail() }, []);
 
     if (error) { return <div>Error: {error}</div> }
 

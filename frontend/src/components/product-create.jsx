@@ -1,29 +1,26 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { productSchema } from "../validation/product";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosAuthInstance } from "../axiosConfig";
+import { useNavigate } from "react-router-dom";
 
-export function ProductEdit() {
-    const { state } = useLocation()
+export function ProductCreate() {
     const navigate = useNavigate();
-
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(productSchema),
-        values: state
     })
 
     async function onSubmit(data) {
         try {
-            await axiosAuthInstance.put(`/api/products/${state._id}`, data);
-            window.alert('Product updated!');
+            await axiosAuthInstance.post(`/api/products`, data);
+            window.alert('Product Created!');
             navigate('/product/admin');
         } catch (error) {
-            console.error('Error updating product:', error);
+            console.error('Error Creating product:', error);
         }
     }
 
@@ -36,33 +33,33 @@ export function ProductEdit() {
                     <div>
                         <label>Name</label>
                         {/* register your input into the hook by invoking the "register" function */}
-                        <input type="text" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("name")} />
+                        <input type="text" placeholder="Awsome product" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("name")} />
                         <p className="text-red-500">{errors.name?.message}</p>
                     </div>
 
                     <div>
                         <label>Price</label>
                         {/* include validation with required or other standard HTML validation rules */}
-                        <input type="number" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("price", { required: true, valueAsNumber: true })} />
+                        <input type="number" placeholder="150" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("price", { required: true, valueAsNumber: true })} />
                         <p className="text-red-500">{errors.price?.message}</p>
                     </div>
                     <div>
                         <label>Description</label>
                         {/* include validation with required or other standard HTML validation rules */}
-                        <textarea className="w-full bg-zinc-200 rounded px-2 py-1" {...register("description", { required: true })} />
+                        <textarea placeholder="This product will change your life" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("description", { required: true })} />
                         <p className="text-red-500">{errors.description?.message}</p>
                     </div>
                     <div>
                         <label>Image Url</label>
                         {/* include validation with required or other standard HTML validation rules */}
-                        <input type="url" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("imageUrl", { required: true })} />
+                        <input placeholder="https://my-product-image" type="url" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("imageUrl", { required: true })} />
                         <p className="text-red-500">{errors.imageUrl?.message}</p>
                     </div>
 
                     {/* errors will return when field validation fails  */}
                     {errors.exampleRequired && <span>This field is required</span>}
 
-                    <button className="bg-blue-500 text-white p-2 rounded-md" type="submit" >Update</button>
+                    <button className="bg-blue-500 text-white p-2 rounded-md" type="submit" >Create</button>
                 </form>
             </div>
         </section>
