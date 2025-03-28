@@ -43,19 +43,19 @@ export function ProductAdminPannel({ productList, onDeleteProduct }) {
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {product.name}
                                 </th>
-                                <td scope="col" className="px-6 py-4 ">
+                                <td className="px-6 py-4 ">
                                     ${product.price}.00
                                 </td>
-                                <td scope="col" className="px-6 py-4 ">
+                                <td className="px-6 py-4 ">
                                     {product.description}
                                 </td>
-                                <td scope="col" className="px-6 py-4 text-ellipsis overflow-hidden  max-w-xs ">
+                                <td className="px-6 py-4 text-ellipsis overflow-hidden  max-w-xs ">
                                     {product.imageUrl}
                                 </td>
-                                <td scope="col" className="px-6 py-4 text-right">
+                                <td className="px-6 py-4 text-right">
                                     <Link to={`update`} state={{ ...product }} relative="path" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                 </td>
-                                <td scope="col" className="px-6 py-4 text-right">
+                                <td className="px-6 py-4 text-right">
                                     <button onClick={() => {
                                         setProduct(product)
                                         modalRef.current.showModal()
