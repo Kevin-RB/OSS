@@ -11,6 +11,7 @@ import { ProductDetail } from './pages/product-detail';
 import { ProductAdmin } from './pages/product-admin';
 import { ProductEdit } from './components/product-edit';
 import { ProductCreate } from './components/product-create';
+import { Cart } from './pages/cart';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[roles.user, roles.admin]} />}>
           <Route path="/product" element={<Product />} />
           <Route path='/product/:id' element={<ProductDetail />} />
+          <Route path='/cart' element={<Cart />} />
           <Route element={<ProtectedRoute allowedRoles={[roles.admin]} />}>
             <Route path="/product/admin" element={<ProductAdmin />} />
             <Route path="/product/admin/create-product" element={<ProductCreate />} />

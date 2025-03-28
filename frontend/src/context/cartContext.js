@@ -18,19 +18,24 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeFromCart = (product) => {
-        cart.splice(cart.indexOf(product), 1);
+        const filteredCart = cart.filter((item) => item._id !== product._id);
+        setCart(filteredCart);
     };
 
     const increaseQuantity = (product) => {
         const newCart = cart.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+            item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
         setCart(newCart);
     };
 
     const decreaseQuantity = (product) => {
-        const newCart = cart.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+        const newCart = cart.map((item) => {
+            if (item.quantity === 1) {
+                return item
+            }
+            return item._id === product._id ? { ...item, quantity: item.quantity - 1 } : item
+        }
         );
         setCart(newCart);
     }
