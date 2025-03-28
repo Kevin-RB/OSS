@@ -19,6 +19,7 @@ export default function Product() {
             setProducts(response.data);
         } catch (error) {
             console.error('Error searching products:', error);
+            setError(error);
         }
     };
 
@@ -32,7 +33,6 @@ export default function Product() {
             const response = await axiosAuthInstance.get('/api/products');
             setProducts(response.data);
         } catch (error) {
-            console.error('Error fetching products:', error);
             setError('Error fetching products');
         }
     }
@@ -53,6 +53,7 @@ export default function Product() {
                     value={searchParams.get('name') || ''}
                 />
             </div>
+            {error && <div className="text-red-500">Error: {error}</div>}
             {user?.roles[0] === roles.admin && (
                 <button className="" onClick={() => { navigate("admin", { relative: "path" }) }}>
                     Admin panel

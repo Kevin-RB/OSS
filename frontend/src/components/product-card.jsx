@@ -6,7 +6,7 @@ export function ProductCard({ imageUrl, name, price, id }) {
         <div class="group w-full max-w-xs p-4  rounded-lg border border-zinc-200">
             <Link to={`${id}`} relative="path">
                 <div className=" rounded-md h-64 w-full overflow-hidden">
-                    <img class="w-full h-full object-cover" src={imageUrl} alt="product image" />
+                    <img class="w-full h-full object-cover" src={imageUrl} alt="" />
                 </div>
             </Link>
             <div class="px-5 pb-5">
