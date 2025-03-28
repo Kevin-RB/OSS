@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export function ProductCard({ imageUrl, name, price, id }) {
 
     return (
-        <div class="group w-full max-w-xs p-4  rounded-lg border border-zinc-200">
+        <div class="group w-full p-4  rounded-lg border border-zinc-200">
             <Link to={`${id}`} relative="path">
                 <div className=" rounded-md h-64 w-full overflow-hidden">
                     <img class="w-full h-full object-cover" src={imageUrl} alt="" />

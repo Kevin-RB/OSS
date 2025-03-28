@@ -42,7 +42,7 @@ export default function Product() {
 
 
     return (
-        <div className='container mx-auto'>
+        <div className='container mx-auto max-w-[1200px]'>
             <div className="max-w-md mx-auto mt-10">
                 <input
                     type="search"
