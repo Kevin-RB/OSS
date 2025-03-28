@@ -1,12 +1,20 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const CartContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
+export const CartProvider = ({ children }) => {
+    const [cart, setCart] = useState(getCartFromSession());
 
-    const addToCart = (product) => {
-        setUser((prev) => [...prev, { ...product, quantity: 1 }]);
+    useEffect(() => {
+        window.sessionStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
+
+
+    const addToCart = (newProduct) => {
+        if (cart.some(product => product._id === newProduct._id)) {
+            return;
+        }
+        setCart((prev) => [...prev, { ...newProduct, quantity: 1 }]);
     };
 
     const removeFromCart = (product) => {
@@ -34,4 +42,9 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useCaart = () => useContext(CartContext);
+export const useCart = () => useContext(CartContext);
+
+function getCartFromSession() {
+    const cart = window.sessionStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+}
