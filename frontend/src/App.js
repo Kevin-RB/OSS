@@ -13,6 +13,8 @@ import { ProductEdit } from './components/product-edit';
 import { ProductCreate } from './components/product-create';
 import { Cart } from './pages/cart';
 import { Checkout } from './pages/checkout';
+import { OrderAdminPannel } from './components/order-management';
+import { OrderUpdate } from './components/order-update';
 
 function App() {
   return (
@@ -31,6 +33,9 @@ function App() {
             <Route path="/product/admin" element={<ProductAdmin />} />
             <Route path="/product/admin/create-product" element={<ProductCreate />} />
             <Route path="/product/admin/update" element={<ProductEdit />} />
+            <Route path="/order-management" element={<OrderAdminPannel />}>
+              <Route path=":id" element={<OrderUpdate />} />
+            </Route>
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={[roles.user]} />}>

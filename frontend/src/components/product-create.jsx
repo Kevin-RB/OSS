@@ -20,7 +20,7 @@ export function ProductCreate() {
             window.alert('Product Created!');
             navigate('/product/admin');
         } catch (error) {
-            console.error('Error Creating product:', error);
+            console.error('Error Creating product:');
         }
     }
 
@@ -55,9 +55,6 @@ export function ProductCreate() {
                         <input placeholder="https://my-product-image" type="url" className="w-full bg-zinc-200 rounded px-2 py-1" {...register("imageUrl", { required: true })} />
                         <p className="text-red-500">{errors.imageUrl?.message}</p>
                     </div>
-
-                    {/* errors will return when field validation fails  */}
-                    {errors.exampleRequired && <span>This field is required</span>}
 
                     <button className="bg-blue-500 text-white p-2 rounded-md" type="submit" >Create</button>
                 </form>

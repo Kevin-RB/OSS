@@ -1,53 +1,106 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/cartContext";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { orderCreation } from "../validation/order";
+import { axiosAuthInstance } from "../axiosConfig";
+import { useAuth } from "../context/AuthContext";
 
 export function Checkout() {
-    const { getCartTotal, cart } = useCart();
+    const { user } = useAuth()
+    const navigate = useNavigate();
+    const { getCartTotal, cart, clearCart } = useCart();
     const total = getCartTotal();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(orderCreation),
+        values: {
+            userId: user.id,
+            cardNumber: "12312312",
+            cvc: "123",
+            email: "user@gmail.com",
+            expirationDate: "11/02/2026",
+            nameOnCard: "John Doe",
+            shippingAddress: "123 Main St",
+            shippingCity: "New York",
+            shippingState: "NY",
+            shippingZip: "10001",
+            itemsInCart: cart.map((product) => ({
+                productId: product._id,
+                quantity: product.quantity,
+            }))
+        }
+    })
+
+    async function onSubmit(data) {
+        try {
+            await axiosAuthInstance.post(`/api/order`, data);
+            window.alert('Order created!');
+            navigate('/product');
+            clearCart();
+        } catch (error) {
+            window.alert('Error creating order');
+        }
+    }
+
+
     return (
         <section className="container mt-6 mx-auto max-w-[1200px] relative mb-6 flex gap-6">
             <div>
-                <form action="#" className="max-w-sm bg-gray-50 dark:bg-gray-700 dark:text-gray-400 p-4 rounded-lg">
+                <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm bg-gray-50 dark:bg-gray-700 dark:text-gray-400 p-4 rounded-lg">
                     <h3 className="mb-4 text-lg font-medium leading-none text-gray-900 dark:text-white">Invoice details</h3>
                     <div className="grid gap-4 mb-4 grid-cols-1">
                         <div>
                             <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
-                            <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            <input {...register("email")} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" F />
+                            <p className="text-red-500">{errors.email?.message}</p>
                         </div>
                         <div>
                             <label for="card-holder" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name on card</label>
-                            <input type="text" name="card-holder" id="card-holder" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            <input {...register("nameOnCard")} type="text" id="card-holder" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <p className="text-red-500">{errors.nameOnCard?.message}</p>
                         </div>
                         <div>
                             <label for="card-number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Card number</label>
-                            <input type="text" name="card-number" id="card-number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            <input {...register("cardNumber")} type="text" id="card-number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <p className="text-red-500">{errors.cardNumber?.message}</p>
                         </div>
                         <div className="grid grid-cols-5 gap-4">
                             <div className="col-span-3">
                                 <label for="expiration-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiration date</label>
-                                <input type="text" name="expiration-date" id="expiration-date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input {...register("expirationDate")} type="text" id="expiration-date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <p className="text-red-500">{errors.expirationDate?.message}</p>
                             </div>
                             <div className="col-span-2">
                                 <label for="cvc" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CVC</label>
-                                <input type="text" name="cvc" id="cvc" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input {...register("cvc")} type="text" id="cvc" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <p className="text-red-500">{errors.cvc?.message}</p>
                             </div>
                         </div>
                         <div>
                             <label for="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                            <input type="text" name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                            <input {...register("shippingAddress")} type="text" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <p className="text-red-500">{errors.shippingAddress?.message}</p>
                         </div>
                         <div className="grid grid-cols-6 gap-4">
                             <div className="col-span-2">
                                 <label for="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                                <input type="text" name="city" id="city" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input {...register("shippingCity")} type="text" id="city" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <p className="text-red-500">{errors.shippingCity?.message}</p>
                             </div>
                             <div className="col-span-2">
                                 <label for="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                <input type="text" name="state" id="state" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input {...register("shippingState")} type="text" id="state" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <p className="text-red-500">{errors.shippingState?.message}</p>
                             </div>
                             <div className="col-span-2">
                                 <label for="postal-code" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal code</label>
-                                <input type="text" name="postal-code" id="postal-code" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input {...register("shippingZip")} type="text" id="postal-code" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <p className="text-red-500">{errors.shippingZip?.message}</p>
                             </div>
                         </div>
                     </div>
