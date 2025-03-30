@@ -21,12 +21,14 @@ const Navbar = () => {
           <>
             {/* Admin links */}
             {isAdmin && (
-              <Link to="/order-management" className="mr-4">Order management</Link>
+              <>
+                <Link to="/user-management" className="mr-4">User management</Link>
+                <Link to="/order-management" className="mr-4">Order management</Link>
+              </>
             )}
             {/* Regular user links */}
             <Link to="/product" className="mr-4">Products</Link>
             <Link to="/cart" className="mr-4">Cart</Link>
-            <Link to="/profile" className="mr-4">Profile</Link>
             <button
               onClick={handleLogout}
               className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
