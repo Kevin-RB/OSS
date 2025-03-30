@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { roles } from '../utils/roles';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -9,6 +10,8 @@ const Navbar = () => {
     logout();
     navigate('/login');
   };
+  const rolesForAdminRoutes = [roles.admin];
+  const isAdmin = user?.roles.some((role) => rolesForAdminRoutes.includes(role));
 
   return (
     <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
@@ -16,6 +19,11 @@ const Navbar = () => {
       <div>
         {user ? (
           <>
+            {/* Admin links */}
+            {isAdmin && (
+              <Link to="/order-management" className="mr-4">Order management</Link>
+            )}
+            {/* Regular user links */}
             <Link to="/product" className="mr-4">Products</Link>
             <Link to="/cart" className="mr-4">Cart</Link>
             <Link to="/profile" className="mr-4">Profile</Link>
