@@ -31,7 +31,7 @@ Ensure you have the following installed:
 1. Clone the repository:
    ```sh
    git clone https://github.com/Kevin-RB/OSS.git
-   cd your-repo
+   cd OSS
    ```
 
 2. Install dependencies for both frontend and backend:
