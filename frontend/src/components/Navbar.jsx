@@ -21,7 +21,10 @@ const Navbar = () => {
           <>
             {/* Admin links */}
             {isAdmin && (
-              <Link to="/order-management" className="mr-4">Order management</Link>
+              <>
+                <Link to="/user-management" className="mr-4">User management</Link>
+                <Link to="/order-management" className="mr-4">Order management</Link>
+              </>
             )}
             {/* Regular user links */}
             <Link to="/product" className="mr-4">Products</Link>

@@ -15,6 +15,7 @@ import { Cart } from './pages/cart';
 import { Checkout } from './pages/checkout';
 import { OrderAdminPannel } from './components/order-management';
 import { OrderUpdate } from './components/order-update';
+import { UserAdminPannel } from './components/user-management';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/order-management" element={<OrderAdminPannel />}>
               <Route path=":id" element={<OrderUpdate />} />
             </Route>
+            <Route path="/user-management" element={<UserAdminPannel />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={[roles.user]} />}>
