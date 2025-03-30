@@ -15,6 +15,7 @@ monorepo/
 │── frontend/
 │── backend/
 │── .github/
+│── .env.example
 │── package.json
 |── package-lock.json
 │── README.md
