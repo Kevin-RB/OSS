@@ -1,68 +1,81 @@
-# **Assignment: Full-Stack CRUD Application Development with DevOps Practices**
+# Awsome store 
 
-## **Objective**
+## Overview
+This is a monorepo containing both the frontend and backend components of the project. The frontend is built using React, and the backend is developed with Node.js and Express. The project a CI/CD pipeline for deployment.
 
-You have been provided with a starter project that includes user authentication using  **Node.js, React.js, and MongoDB**. Your task is to extend this application by implementing **CRUD (Create, Read, Update, Delete) operations** for a real-world application of your choice, while following industry best practices such as:
+## Tech Stack
+- **Frontend:** React
+- **Backend:** Node.js with Express
+- **Database:** MongoDB
+- **CI/CD:** GitHub Actions with deployment to an EC2 instance
 
-* **Project Management with JIRA**
-* **Requirement Diagram using SysML**
-* **Version Control using GitHub**
-* **CI/CD Integration for Automated Deployment**
+## Folder Structure
+```
+monorepo/
+│── frontend/
+│── backend/
+│── .github/
+│── package.json
+|── package-lock.json
+│── README.md
+```
 
-## **Requirements**
+## Setup
 
-### **1. Choose a Real-World Application**
+### Prerequisites
+Ensure you have the following installed:
+- Node.js & npm
 
-Select a meaningful use case for your CRUD operations. We will provide the list, you have to select it.
+### Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/Kevin-RB/OSS.git
+   cd your-repo
+   ```
 
-### **2. Project Management with JIRA and SysML**
+2. Install dependencies for both frontend and backend:
+   ```sh
+   cd frontend && npm install
+   cd ../backend && npm install
+   ```
 
-* Create a **JIRA project** and define:
-  * **Epic**
-  * **User Stories** (features required in your app)
-  * **Child issues & Subtasks** (breaking down development work)
-  * **Sprint Planning** (organizing work into milestones)
-* Document your JIRA **board URL** in the project README.
-* Draw a requirements diagram
+3. Set up environment variables for the backend:
+   ```sh
+   cp backend/.env.example backend/.env
+   ```
+   Modify `.env` as needed.
 
-### **3. Backend Development (Node.js + Express + MongoDB)**
+4. Start the development environment:
+   ```sh
+   npm run dev
+   ```
+   from root folder
+   
+## CI/CD Pipeline
 
-* Create a user-friendly interface to interact with your API (Some portion developed, follow task manager app)).
-* Implement **forms** for adding and updating records.
-* Display data using  **tables, cards, or lists (Follow how we showed data in task manager app)**
+### GitHub Actions Workflow
+The project uses GitHub Actions to automate builds, tests, and deployments. The workflow is defined in `.github/workflows/ci.yml`.
 
-### **4. Frontend Development (React.js)**
+#### Steps:
+1. **Trigger:** On push to `main`, pull requests to `main`, or manual execution.
+2. **Install Dependencies:** Installs required packages for both frontend and backend.
+3. **Run Tests:** Executes unit tests for the backend.
+4. **Deploy Backend:**
+   - Loads production environment variables.
+   - Reloads or starts the backend using PM2.
+5. **Build Frontend:**
+   - Installs dependencies.
+   - Runs the build process.
+6. **Deploy Application:**
+   - Loads production environment variables.
+   - Reloads or starts the frontend and backend using PM2.
+   - Saves the PM2 process.
 
-* Create a user-friendly interface to interact with your API (**Some portion developed, follow task manager app)**.
-* Implement **forms** for adding, showing, deleting and updating records (CRUD).
-* Display data using  **tables, cards, or lists (Follow how we showed data in task manager app)**
+## Contributing
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Push to the branch and open a pull request.
 
-### **5. Authentication & Authorization**
-
-* Ensure **only authenticated users** can access and perform CRUD operations. (Already developed in your project)
-* Use **JWT (JSON Web Tokens)** for user authentication (Use the task manager one from .env file).
-
-### **6. GitHub Version Control & Branching Strategy**
-
-* Use **GitHub for version control** and maintain:
-  * `main` branch (stable production-ready code)
-  * Feature branches (`feature/xyz`) for each new functionality
-* Follow proper **commit messages** and  **pull request (PR) reviews** .
-
-### **7. CI/CD Pipeline Setup**
-
-* Implement a **CI/CD pipeline using GitHub Actions** to:
-  * Automatically **run tests** on every commit/pull request (Optional).
-  * Deploy the **backend** to **AWS** .
-  * Deploy the **frontend** to **AWS**.
-* Document your  **CI/CD workflow in the README** .
-
-## **Submission Requirements**
-
-* **JIRA Project Board URL** (user stories ).
-* **Requirment diagram** (Using project features)
-* **GitHub Repository** (`backend/` and `frontend/`).
-* **README.md** with:
-
-  * Project setup instructions.
-  * CI/CD pipeline details.
+## License
+[MIT](LICENSE)
