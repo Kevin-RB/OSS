@@ -1,0 +1,63 @@
+const Order = require('../models/Order');
+const { orderCreation, orderUpdate } = require('../validation/order-validation');
+
+class OrderService {
+    async createOrder(data) {
+        // use zod to validate the request body
+        const result = orderCreation.safeParse(data);
+        // if the validation fails, return a 400 response with the error message
+        if (!result.success) {
+            return { success: false, type: 'validation', error: result.error.format() };
+        }
+
+        const validatedData = result.data;
+        // create the product
+        const order = await Order.create({
+            userId: validatedData.userId,
+            email: validatedData.email,
+            shippingAddress: validatedData.shippingAddress,
+            shippingCity: validatedData.shippingCity,
+            shippingState: validatedData.shippingState,
+            shippingZip: validatedData.shippingZip,
+            itemsInCart: data.itemsInCart,
+        });
+
+        return { success: true, orderId: order._id };
+    }
+
+    async getOrders() {
+        return await Order.find({})
+            .populate('userId', ['-password', '-role'])
+            .populate('itemsInCart.productId');
+    }
+
+    async updateOrderStatus(data) {
+        // validate the request body
+        const result = orderUpdate.safeParse(data);
+        // if the validation fails, return a 400 response with the error message
+        if (!result.success) {
+            return { success: false, type: 'validation', error: result.error.format() };
+        }
+
+        // get the product details from the request body
+        const { id, orderStatus } = result.data;
+
+        // find the product by id
+        const order = await Order.findById(id);
+        if (!order) {
+            return { success: false, type: 'not_found', message: 'Order not found' };
+        }
+
+        // update the product
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id,
+            { orderStatus },
+            { new: true }
+        );
+
+        // return the updated product
+        return { success: true, updatedOrder };
+    }
+}
+
+module.exports = new OrderService();
