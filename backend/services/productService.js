@@ -1,3 +1,4 @@
+const ProductFactory = require('../factories/productFactory');
 const Product = require('../models/Product');
 const { productCreation } = require('../validation/product-validation');
 
@@ -18,7 +19,7 @@ class ProductService {
         }
 
         // create the product
-        const product = await Product.create({ name, price, description, imageUrl });
+        const product = await ProductFactory.createProduct(result.data);
         return {
             success: true,
             product: {
@@ -26,6 +27,7 @@ class ProductService {
                 name: product.name,
                 price: product.price,
                 imageUrl: product.imageUrl,
+                type: product.type,
             }
         };
     }
