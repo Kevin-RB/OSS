@@ -1,3 +1,4 @@
+const { processOrderPayment } = require('../adapter/PaymentHandler');
 const Order = require('../models/Order');
 const { orderCreation, orderUpdate } = require('../validation/order-validation');
 
@@ -10,6 +11,13 @@ class OrderService {
             return { success: false, type: 'validation', error: result.error.format() };
         }
 
+        const paymentResult = await processOrderPayment(result.data, data.paymentMethod);
+
+        if (!paymentResult.success) {
+            return { success: false, type: 'payment', error: paymentResult.error };
+        }
+
+
         const validatedData = result.data;
         // create the product
         const order = await Order.create({
@@ -20,9 +28,11 @@ class OrderService {
             shippingState: validatedData.shippingState,
             shippingZip: validatedData.shippingZip,
             itemsInCart: data.itemsInCart,
+            amount: validatedData.amount,
+            paymentMethod: validatedData.paymentMethod,
         });
 
-        return { success: true, orderId: order._id };
+        return { success: true, orderId: order._id, payment: paymentResult };
     }
 
     async getOrders() {

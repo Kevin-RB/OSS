@@ -1,16 +1,21 @@
 const orderService = require('../services/orderService');
 
+const errors = {
+    validation: 'Validation error',
+    payment: 'Payment error',
+}
+
 const createOrder = async (req, res) => {
     try {
         const result = await orderService.createOrder(req.body);
         if (!result.success) {
             return res.status(400).json({
-                message: result.type === 'validation' ? 'Validation error' : 'Failed to create order',
-                error: result.error
+                message: errors[result.type] || 'Failed to create order',
+                type: result.type,
+                error: result.error,
             });
         }
-
-        res.status(201).json({ message: "Order created", id: result.orderId });
+        res.status(201).json({ message: "Order created", id: result.orderId, payment: result.payment });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
