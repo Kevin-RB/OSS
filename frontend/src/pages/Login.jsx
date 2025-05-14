@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../axiosConfig';
+import { Button } from '../components/ui/Button';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -41,6 +42,12 @@ const Login = () => {
           Login
         </button>
       </form>
+      <Button>Button</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
     </div>
   );
 };
