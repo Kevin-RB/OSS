@@ -1,5 +1,8 @@
+// tailwind.config.js
+const { fontFamily } = require("tailwindcss/defaultTheme");
+
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ["./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       borderRadius: {
@@ -75,6 +78,10 @@ module.exports = {
         "color-sidebar-border": "var(--sidebar-border)",
         "color-sidebar-ring": "var(--sidebar-ring)",
       },
+    container: {
+      center: true,
+      padding: "2rem",
+    },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -96,3 +103,34 @@ module.exports = {
   },
   plugins: [],
 };
+
+// module.exports = {
+//   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+//   theme: {
+//     extend: {
+//       colors: {
+//         primary: "#1d4ed8",
+//         "primary-foreground": "#ffffff",
+
+//         destructive: "#ef4444",
+//         "destructive-foreground": "#ffffff",
+
+//         secondary: "#f3f4f6",
+//         "secondary-foreground": "#1f2937",
+
+//         accent: "#e5e7eb",
+//         "accent-foreground": "#111827",
+
+//         muted: "#f9fafb",
+//         "muted-foreground": "#6b7280",
+
+//         background: "#ffffff",
+//         foreground: "#111827",
+
+//         input: "#d1d5db",
+//         ring: "#3b82f6",
+//       },
+//     },
+//   },
+//   plugins: [],
+// };
