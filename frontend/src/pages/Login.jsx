@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -35,46 +34,6 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto mt-20">
-      <Button size="sm" disabled>
-        Small
-      </Button>
-      <Button disabled>Default</Button>
-      <Button size="lg" disabled>
-        Large
-      </Button>
-      <Button variant="destructive">shadcn/ui</Button>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      <div className="grid w-full items-center gap-2">
-        <Label htmlFor="error">Your Name</Label>
-        <Input
-          type="text"
-          id="error"
-          placeholder="Enter your name"
-          className="border-red-600"
-        />
-        <p className="text-xs font-medium text-red-600">
-          This field is required
-        </p>
-      </div>
-
       <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded">
         <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
         <input
@@ -100,12 +59,6 @@ const Login = () => {
           Login
         </button>
       </form>
-      <Button>Button</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
     </div>
   );
 };
