@@ -2,25 +2,26 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { axiosAuthInstance } from "../axiosConfig";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "../components/ui/table"
 import { Badge } from "../components/ui/badge"
 import { Button } from "../components/ui/button"
 import { Slash } from "lucide-react"
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
 import { ArrowLongRight } from "@mynaui/icons-react";
+import { SectionTitle } from "./section-title";
 
 export function OrderAdminPannel() {
     const [orders, setOrders] = useState([]);
@@ -38,31 +39,31 @@ export function OrderAdminPannel() {
     }, [])
 
     return (
-        <section>
-            <Breadcrumb className="container my-8">
+        <section className="container mx-auto space-y-4 rounded-lg">
+            <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                        <BreadcrumbLink href="/product">Home</BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator>
-                    <Slash />
-                    </BreadcrumbSeparator>
+                    <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                    <BreadcrumbPage>Order Management</BreadcrumbPage>
+                        <BreadcrumbPage href="/order-management">Order Management</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="overflow-x-auto border rounded-md shadow-sm bg-white container">
+            <SectionTitle title="Order Management" />
+
+            <div className="overflow-x-auto border rounded-md shadow-sm bg-white">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                        <TableHead>OrderID</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Address</TableHead>
-                        <TableHead>City</TableHead>
-                        <TableHead>State</TableHead>
-                        <TableHead>Zip</TableHead>
-                        <TableHead>Action</TableHead>
+                            <TableHead>OrderID</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Address</TableHead>
+                            <TableHead>City</TableHead>
+                            <TableHead>State</TableHead>
+                            <TableHead>Zip</TableHead>
+                            <TableHead className="text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -74,18 +75,19 @@ export function OrderAdminPannel() {
                                 Delivered: "success",
                             }[order.orderStatus] || "outline"
                             return (
-                            <TableRow key={order._id}>
-                            <TableCell>{order._id}</TableCell>
-                            <TableCell><Badge variant={statusVariant}>{order.orderStatus}</Badge></TableCell>
-                            <TableCell>{order.shippingAddress}</TableCell>
-                            <TableCell>{order.shippingCity}</TableCell>
-                            <TableCell>{order.shippingState}</TableCell>
-                            <TableCell>{order.shippingZip}</TableCell>
-                            <TableCell><Link to={order._id} className="hover:underline">
-                                View <ArrowLongRight className="inline" size="16"/>
-                            </Link></TableCell>
-                            </TableRow>
-                        )})}
+                                <TableRow key={order._id}>
+                                    <TableCell>{order._id}</TableCell>
+                                    <TableCell><Badge variant={statusVariant}>{order.orderStatus}</Badge></TableCell>
+                                    <TableCell>{order.shippingAddress}</TableCell>
+                                    <TableCell>{order.shippingCity}</TableCell>
+                                    <TableCell>{order.shippingState}</TableCell>
+                                    <TableCell>{order.shippingZip}</TableCell>
+                                    <TableCell><Link to={order._id} className="hover:underline">
+                                        View <ArrowLongRight className="inline" size="16" />
+                                    </Link></TableCell>
+                                </TableRow>
+                            )
+                        })}
                     </TableBody>
                 </Table>
             </div>

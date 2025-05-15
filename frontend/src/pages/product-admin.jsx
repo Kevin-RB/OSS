@@ -46,7 +46,7 @@ export function ProductAdmin() {
     }
 
     return (
-        <section className="container mx-auto space-y-4 bg-white p-4 rounded-lg">
+        <section className="container mx-auto space-y-4 rounded-lg">
             <div className="flex justify-between items-center">
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -62,8 +62,7 @@ export function ProductAdmin() {
             </div>
 
             <SectionTitle title="Product Management" />
-
-            <div className="mx-auto w-full max-w-6xl overflow-x-auto">
+            <div className="mx-auto w-full overflow-x-auto bg-white border rounded-md p-4">
                 <div className="flex w-full justify-end mb-4">
                     <Link to="create-product">
                         <Button size="sm" variant="default">
@@ -92,15 +91,13 @@ export function ProductAdmin() {
                                 </TableCell>
                                 <TableCell>{product.price.toFixed(2)}</TableCell>
                                 <TableCell>{product.description}</TableCell>
-                                <TableCell>
+                                <TableCell className="text-right">
                                     <Link to={`update`} state={{ ...product }} relative="path">
                                         <Button variant="ghost" size="icon">
                                             <Pencil className="h-4 w-4" />
                                             <span className="sr-only">Edit</span>
                                         </Button>
                                     </Link>
-                                </TableCell>
-                                <TableCell>
                                     <DeleteDialog onDeleteProduct={() => deleteProduct(product._id)} />
                                 </TableCell>
                             </TableRow>
