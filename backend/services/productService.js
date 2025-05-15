@@ -33,10 +33,11 @@ class ProductService {
     }
 
     async getProducts(filter) {
-        if (filter?.name) {
-            return await Product.find({ name: { $regex: filter.name, $options: 'i' } });
+        const query = {};
+        if (filter?.name && filter.name !== '') {
+            query.name = { $regex: filter.name, $options: 'i' };
         }
-        return await Product.find({});
+        return await Product.find(query);
     }
 
     async getProductById(productId) {

@@ -11,26 +11,14 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
 
-  const handleSearch = async (searchTerm) => {
+  async function fetchProducts(searchTerm) {
     try {
-      const response = await axiosAuthInstance.get(
-        `/api/products/?name=${searchTerm}`
-      );
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Error searching products:", error);
-      setError(error);
-    }
-  };
-
-  useEffect(() => {
-    const name = searchParams.get("name");
-    handleSearch(name);
-  }, [searchParams]);
-
-  async function fetchProducts() {
-    try {
-      const response = await axiosAuthInstance.get("/api/products");
+      const name = searchTerm.get("name");
+      let query = "";
+      if (name) {
+        query += `?name=${name}`;
+      }
+      const response = await axiosAuthInstance.get(`/api/products/${query}`);
       setProducts(response.data);
     } catch (error) {
       setError("Error fetching products");
@@ -38,8 +26,9 @@ export default function Product() {
   }
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts(searchParams);
+  }, [searchParams]);
+
   return (
     <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
       {/* Search and Manage Products */}
