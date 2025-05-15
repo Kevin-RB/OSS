@@ -8,15 +8,19 @@ import { useAuth } from "../context/AuthContext";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { ShieldCheck, CreditCard } from "lucide-react";
+import { ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { PayPalIcon } from "../icons/paypal";
+import { useToast } from "../context/toastContext";
 
 export function Checkout() {
     const { user } = useAuth()
     const navigate = useNavigate();
     const { getCartTotal, cart, clearCart } = useCart();
     const total = getCartTotal();
+    const { addToast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
+
     const [paymentMethod, setPaymentMethod] = useState("card"); // Default to card payment
 
     const {
@@ -38,12 +42,25 @@ export function Checkout() {
 
     async function onSubmit(data) {
         try {
+            setIsLoading(true);
             await axiosAuthInstance.post(`/api/order`, data);
-            window.alert('Order created!');
+            addToast({
+                title: "Success",
+                description: "Order created successfully.",
+                variant: "success",
+                duration: 3000,
+            });
             navigate('/product');
             clearCart();
         } catch (error) {
-            window.alert('Error creating order');
+            addToast({
+                title: "Error",
+                description: "Failed to create order. Please try again.",
+                variant: "error",
+                duration: 3000,
+            });
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -154,12 +171,27 @@ export function Checkout() {
                     <Button
                         type="submit"
                         className={`w-full mt-2 flex items-center justify-center py-2.5`}
-                    >
-                        {paymentMethod === "card" ? (
-                            `Checkout with Card`
-                        ) : (
-                            `Checkout with PayPal`
-                        )}
+                        disabled={isLoading}
+                    >{
+                            isLoading ? (
+                                <>
+                                    <Loader2 className="animate-spin mr-2" />
+                                    <span>Processing...</span>
+                                </>
+                            ) : (
+                                paymentMethod === "card" ? (
+                                    <>
+                                        <CreditCard className="mr-2" />
+                                        <span>Checkout with Card</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <PayPalIcon className="mr-2" />
+                                        <span>Checkout with PayPal</span>
+                                    </>
+                                )
+                            )
+                        }
                     </Button>
                 </form>
             </div>
