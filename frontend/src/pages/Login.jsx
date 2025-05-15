@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axiosConfig";
 import { useForm } from "react-hook-form";
 
-
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -48,7 +47,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email */}
           <div className="grid w-full items-center gap-2">
-            <Label htmlFor="name">Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               type="text"
               id="email"
