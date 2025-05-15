@@ -4,7 +4,6 @@ const { orderCreation, orderUpdate } = require('../validation/order-validation')
 
 class OrderService {
     async createOrder(data) {
-        console.log('Creating order with data:', data);
         // use zod to validate the request body
         const result = orderCreation.safeParse(data);
         // if the validation fails, return a 400 response with the error message
