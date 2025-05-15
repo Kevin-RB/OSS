@@ -1,28 +1,46 @@
 import { z } from "zod";
 
-// Validation schema for product creation
-const orderCreation = z.object({
-    userId: z.string().nonempty(),
-    email: z.string().email(),
-    nameOnCard: z.string().nonempty(),
-    cardNumber: z.string().nonempty(),
-    expirationDate: z.string().nonempty(),
-    cvc: z.string().nonempty(),
-    shippingAddress: z.string().nonempty(),
-    shippingCity: z.string().nonempty(),
-    shippingState: z.string().nonempty(),
-    shippingZip: z.string().nonempty(),
-    amount: z.number().positive("Amount must be a positive number"),
-    paymentMethod: z.enum(["Credit Card", "Debit Card", "PayPal"]),
-    itemsInCart: z.array(z.object({
-        productId: z.string().nonempty("Product ID cannot be empty"),
-        quantity: z.number().nonnegative("Quantity must be a non-negative number"),
-    })).nonempty("Items in cart cannot be empty"),
-});
-
 const orderUpdate = z.object({
     orderStatus: z.enum(["Pending", "Shipped", "Delivered", "Cancelled"]),
-    id: z.string().nonempty()
+    id: z.string().nonempty("Order ID is required"),
 });
+
+const paymentMethods = z.enum(["card", "paypal"]);
+
+const baseOrder = z.object({
+    userId: z.string().nonempty("User ID is required"),
+    email: z.string().email("Invalid email format"),
+    totalAmount: z.number().positive("Total amount must be a positive number"),
+    itemsInCart: z.array(z.object({
+        productId: z.string().nonempty("Product ID is required"),
+        quantity: z.number().nonnegative("Quantity must be a non-negative number"),
+    })).nonempty("Items in cart cannot be empty")
+});
+
+const shippingDetailsSchema = z.object({
+    shippingAddress: z.string().nonempty("Shipping address is required"),
+    shippingCity: z.string().nonempty("Shipping city is required"),
+    shippingState: z.string().nonempty("Shipping state is required"),
+    shippingZip: z.string().nonempty("Shipping zip code is required"),
+});
+
+const cardDetails = z.object({
+    nameOnCard: z.string().nonempty("Name on card is required"),
+    cardNumber: z.string().nonempty("Card number is required"),
+    expirationDate: z.string().nonempty("Expiration date is required"),
+    cvc: z.string().nonempty("CVC is required"),
+});
+
+const orderCreation = z.discriminatedUnion("paymentMethod", [
+    // Card payment schema
+    z.object({
+        paymentMethod: z.literal(paymentMethods.Enum.card),
+    }).extend(baseOrder.shape).extend(shippingDetailsSchema.shape).extend(cardDetails.shape),
+
+    // PayPal payment schema
+    z.object({
+        paymentMethod: z.literal(paymentMethods.Enum.paypal),
+    }).extend(baseOrder.shape).extend(shippingDetailsSchema.shape),
+]);
 
 export { orderCreation, orderUpdate };

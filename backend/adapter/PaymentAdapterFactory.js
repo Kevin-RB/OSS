@@ -2,8 +2,7 @@ const StripeAdapter = require('./StripeAdapter');
 const PayPalAdapter = require('./PayPalAdapter');
 
 const paymentMethods = {
-    "credit card": StripeAdapter,
-    "debit card": StripeAdapter,
+    "card": StripeAdapter,
     paypal: PayPalAdapter,
 };
 

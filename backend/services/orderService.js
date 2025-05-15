@@ -4,6 +4,7 @@ const { orderCreation, orderUpdate } = require('../validation/order-validation')
 
 class OrderService {
     async createOrder(data) {
+        console.log('Creating order with data:', data);
         // use zod to validate the request body
         const result = orderCreation.safeParse(data);
         // if the validation fails, return a 400 response with the error message
@@ -11,12 +12,11 @@ class OrderService {
             return { success: false, type: 'validation', error: result.error.format() };
         }
 
-        const paymentResult = await processOrderPayment(result.data, data.paymentMethod);
+        const paymentResult = await processOrderPayment(result.data.totalAmount, data.paymentMethod);
 
         if (!paymentResult.success) {
             return { success: false, type: 'payment', error: paymentResult.error };
         }
-
 
         const validatedData = result.data;
         // create the product
@@ -28,7 +28,7 @@ class OrderService {
             shippingState: validatedData.shippingState,
             shippingZip: validatedData.shippingZip,
             itemsInCart: data.itemsInCart,
-            amount: validatedData.amount,
+            totalAmount: validatedData.totalAmount,
             paymentMethod: validatedData.paymentMethod,
         });
 

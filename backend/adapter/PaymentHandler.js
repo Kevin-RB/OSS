@@ -9,12 +9,12 @@ const PaymentAdapterFactory = require('./PaymentAdapterFactory');
  * @returns {Promise<Object>} - Promise resolving to the payment result
  */
 
-async function processOrderPayment(order, paymentMethod) {
+async function processOrderPayment(amount, paymentMethod) {
   try {
     // Create payment service
     const paymentService = new PaymentService();
     // Create payment record
-    const payment = paymentService.createPayment(order.amount, paymentMethod);
+    const payment = paymentService.createPayment(amount, paymentMethod);
 
     // Get factory and create appropriate payment adapter
     const paymentAdapterFactory = PaymentAdapterFactory.getInstance();
