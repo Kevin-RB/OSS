@@ -11,6 +11,7 @@ const Navbar = () => {
     logout();
     navigate('/login');
   };
+
   const rolesForAdminRoutes = [roles.admin];
   const isAdmin = user?.roles.some((role) => rolesForAdminRoutes.includes(role));
 

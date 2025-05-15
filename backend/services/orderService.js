@@ -11,12 +11,11 @@ class OrderService {
             return { success: false, type: 'validation', error: result.error.format() };
         }
 
-        const paymentResult = await processOrderPayment(result.data, data.paymentMethod);
+        const paymentResult = await processOrderPayment(result.data.totalAmount, data.paymentMethod);
 
         if (!paymentResult.success) {
             return { success: false, type: 'payment', error: paymentResult.error };
         }
-
 
         const validatedData = result.data;
         // create the product
@@ -28,7 +27,7 @@ class OrderService {
             shippingState: validatedData.shippingState,
             shippingZip: validatedData.shippingZip,
             itemsInCart: data.itemsInCart,
-            amount: validatedData.amount,
+            totalAmount: validatedData.totalAmount,
             paymentMethod: validatedData.paymentMethod,
         });
 

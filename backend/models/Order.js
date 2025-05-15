@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
     shippingCity: { type: String, required: true },
     shippingState: { type: String, required: true },
     shippingZip: { type: String, required: true },
-    amount: { type: Number, required: true },
+    totalAmount: { type: Number, required: true },
     paymentMethod: { type: String, required: true },
     itemsInCart: [
         {
