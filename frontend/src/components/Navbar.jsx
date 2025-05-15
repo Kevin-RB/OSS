@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { roles } from '../utils/roles';
+import { Button } from "../components/ui/button"
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -14,41 +15,50 @@ const Navbar = () => {
   const isAdmin = user?.roles.some((role) => rolesForAdminRoutes.includes(role));
 
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold">Awsome store! 👽</Link>
-      <div>
-        {user ? (
-          <>
-            {/* Admin links */}
-            {isAdmin && (
-              <>
-                <Link to="/user-management" className="mr-4">User management</Link>
-                <Link to="/order-management" className="mr-4">Order management</Link>
-              </>
-            )}
-            {/* Regular user links */}
-            <Link to="/product" className="mr-4">Products</Link>
-            <Link to="/cart" className="mr-4">Cart</Link>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="mr-4">Login</Link>
-            <Link
-              to="/register"
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-700"
-            >
-              Register
-            </Link>
-          </>
-        )}
+    <header className="w-full border-b bg-white py-4">
+      <div className="container mx-auto flex items-center justify-between px-4">
+        {/* Logo */}
+        <Link to="/" className="text-xl font-bold text-black">
+          Gahokef
+        </Link>
+
+        {/* Navigation */}
+        <nav className="flex items-center space-x-4 text-sm">
+          {user ? (
+            <>
+              {isAdmin && (
+                <>
+                  <Link to="/user-management" className="hover:underline">
+                    Users
+                  </Link>
+                  <Link to="/order-management" className="hover:underline">
+                    Orders
+                  </Link>
+                </>
+              )}
+              <Link to="/product" className="hover:underline">
+                Products
+              </Link>
+              <Link to="/cart" className="hover:underline">
+                Cart
+              </Link>
+              <Button variant="destructive" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hover:underline">
+                Login
+              </Link>
+              <Link to="/register">
+                <Button variant="default">Register</Button>
+              </Link>
+            </>
+          )}
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 };
 

@@ -1,5 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { axiosAuthInstance } from "../axiosConfig";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose
+} from "../components/ui/dialog"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table"
+import { Badge } from "../components/ui/badge"
+import { Button } from "../components/ui/button"
+import { Trash } from "@mynaui/icons-react";
+import { Slash } from "lucide-react"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../components/ui/breadcrumb"
 
 export function UserAdminPannel() {
     const modalRef = useRef(null);
@@ -31,58 +61,66 @@ export function UserAdminPannel() {
     }, [])
 
     return (
-        <section className="grid h-full w-full pt-6 place-items-center" >
-            <div class="relative max-w-3xl w-full overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                User name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Email
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Roles
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="sr-only">Delete</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users?.map((user) => (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <th scope="col" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {user.name}
-                                </th>
-                                <td className="px-6 py-4 ">
-                                    {user.email}
-                                </td>
-                                <td className="px-6 py-4 ">
-                                    {user.role.map((role) => (
-                                        <span className="text-xs text-gray-500 bg-gray-200 rounded-full px-2 py-1">{role}</span>
-                                    ))}
-                                </td>
-                                <td className="px-6 py-4 text-right">
-                                    <button onClick={() => {
-                                        setUser(user)
-                                        modalRef.current.showModal()
-                                    }} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+        <Dialog>
+            <Breadcrumb className="container my-8">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator>
+                    <Slash />
+                    </BreadcrumbSeparator>
+                    <BreadcrumbItem>
+                    <BreadcrumbPage>User Management</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+            <div className="overflow-x-auto border rounded-md shadow-sm bg-white container">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Roles</TableHead>
+                    <TableHead>Action</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {users?.map((user) => (
+                        <TableRow>
+                        <TableCell>{user.name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                            <Badge>{user.role.map((role) => (
+                                <span>{role}</span>
+                                ))}</Badge>
+                        </TableCell>
+                        <TableCell>
+                            <DialogTrigger>
+                            <Button variant="destructive"><Trash /></Button>
+                            </DialogTrigger>
+                        </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
             </div>
-            <dialog ref={modalRef} className="dialog p-6 bg-white rounded-md shadow-md w-96">
-                <h1 className="text-2xl mb-6">You are about to delete a <bold>User</bold></h1>
-                <p className="text-zinc-600 mb-4 text-center">This action is irreversible!</p>
-                <div className="flex gap-2">
-                    <button className="w-full px-2 py-1 bg-red-500 text-white rounded-md" onClick={() => { deleteUser(user._id) }}>Delete</button>
-                    <button className="w-full px-2 py-1 text-zinc-600 border border-zinc-700 rounded-md" onClick={() => { modalRef.current.close() }}>Cancel</button>
-                </div>
-            </dialog>
-        </section>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Delete Account?</DialogTitle>
+                    <DialogDescription>
+                        Deleting your account is irreversible and will erase all your data. This action cannot be undone.
+                    </DialogDescription>
+                    </DialogHeader>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button type="button" variant="outline">
+                        Cancel
+                        </Button>
+                    </DialogClose>
+                    <Button variant="destructive" type="submit">Continue</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
