@@ -2,15 +2,18 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axiosConfig";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useToast } from "../context/toastContext";
+import { loginSchema } from "../validation/user";
 
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../validation/user";
 
 const Login = () => {
   const { login } = useAuth();
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const {
@@ -25,9 +28,21 @@ const Login = () => {
     try {
       const response = await axiosInstance.post("/api/auth/login", data);
       login(response.data);
+      addToast({
+        title: "Success",
+        description: "Successfully Log in.",
+        variant: "success",
+        duration: 3000,
+      });
       navigate("/product");
     } catch (error) {
-      alert("Login failed. Please try again.");
+      addToast({
+        title: "Error",
+        description:
+          error.response.data?.message || "Login failed. Please try again.",
+        variant: "error",
+        duration: 3000,
+      });
     }
   };
 

@@ -4,11 +4,12 @@ import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { axiosInstance } from "../axiosConfig";
 
+import { useToast } from "../context/toastContext";
+import { registerSchema } from "../validation/user";
+
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { useToast } from "../context/toastContext";
-import { registerSchema } from "../validation/user";
 
 const Register = () => {
   const navigate = useNavigate();
