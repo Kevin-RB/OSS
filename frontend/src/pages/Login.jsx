@@ -1,40 +1,28 @@
-import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axiosConfig";
+import { useForm } from "react-hook-form";
 
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../validation/user";
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({});
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.email) {
-      newErrors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required.";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters.";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
+  const onSubmit = async (data) => {
     try {
-      const response = await axiosInstance.post("/api/auth/login", formData);
+      const response = await axiosInstance.post("/api/auth/login", data);
       login(response.data);
       navigate("/product");
     } catch (error) {
@@ -55,7 +43,7 @@ const Login = () => {
             Enter your details below to login
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email */}
           <div className="grid w-full items-center gap-2">
             <Label htmlFor="name">Email</Label>
@@ -63,12 +51,10 @@ const Login = () => {
               type="text"
               id="email"
               placeholder="Enter your email"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              {...register("email")}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
+              <p className="text-red-500 text-sm">{errors.email?.message}</p>
             )}
           </div>
           {/* Password */}
@@ -78,12 +64,10 @@ const Login = () => {
               type="password"
               id="password"
               placeholder="Enter your password"
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
+              {...register("password")}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password}</p>
+              <p className="text-red-500 text-sm">{errors.password?.message}</p>
             )}
           </div>
 
