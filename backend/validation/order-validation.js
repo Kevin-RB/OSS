@@ -12,10 +12,12 @@ const orderCreation = z.object({
     shippingCity: z.string().nonempty(),
     shippingState: z.string().nonempty(),
     shippingZip: z.string().nonempty(),
+    amount: z.number().positive("Amount must be a positive number"),
+    paymentMethod: z.enum(["Credit Card", "Debit Card", "PayPal"]),
     itemsInCart: z.array(z.object({
-        productId: z.string().nonempty(),
-        quantity: z.number().nonnegative()
-    })).nonempty()
+        productId: z.string().nonempty("Product ID cannot be empty"),
+        quantity: z.number().nonnegative("Quantity must be a non-negative number"),
+    })).nonempty("Items in cart cannot be empty"),
 });
 
 const orderUpdate = z.object({
