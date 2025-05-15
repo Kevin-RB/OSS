@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const orderUpdate = z.object({
-    orderStatus: z.enum(["Pending", "Shipped", "Delivered", "Cancelled"]),
+    orderStatus: z.enum(["Pending", "Shipped", "Delivered", "Canceled"]),
     id: z.string().nonempty("Order ID is required"),
 });
 
