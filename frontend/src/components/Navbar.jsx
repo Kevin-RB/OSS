@@ -18,9 +18,19 @@ const Navbar = () => {
   return (
     <header className="w-full border-b bg-white py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold text-black">
-          Gahokef
-        </Link>
+        {user ? (
+          <>
+            <Link to="/product" className="text-xl font-bold text-black">
+              Gahokef
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/" className="text-xl font-bold text-black">
+              Gahokef
+            </Link>
+          </>
+        )}
 
         <nav className="flex items-center space-x-4 text-sm">
           {user ? (

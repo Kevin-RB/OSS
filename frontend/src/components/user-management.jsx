@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosAuthInstance } from "../axiosConfig";
 import {
   Dialog,
@@ -30,21 +30,26 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
+import { useToast } from "../context/toastContext";
 
 export function UserAdminPannel() {
-    const modalRef = useRef(null);
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState();
+    const { addToast } = useToast();
 
     async function deleteUser(id) {
         try {
             await axiosAuthInstance.delete(`/api/user/${id}`);
-            window.alert('User deleted!');
+            addToast({
+                title: "Success",
+                description: "Account is deleted!",
+                variant: "success",
+                duration: 3000,
+            });
             setUsers(users.filter((user) => user._id !== id));
         } catch (error) {
             console.error('Error deleting user:',);
         } finally {
-            modalRef.current.close();
         }
     }
 
@@ -97,7 +102,7 @@ export function UserAdminPannel() {
                         </TableCell>
                         <TableCell>
                             <DialogTrigger>
-                            <Button size="icon" variant="destructive"><Trash/></Button>
+                            <Button onClick={() => {setUser(user)}} size="icon" variant="destructive"><Trash/></Button>
                             </DialogTrigger>
                         </TableCell>
                         </TableRow>
@@ -118,7 +123,9 @@ export function UserAdminPannel() {
                         Cancel
                         </Button>
                     </DialogClose>
-                    <Button variant="destructive" type="submit">Continue</Button>
+                    <DialogClose asChild>
+                    <Button variant="destructive" type="submit" onClick={() => { deleteUser(user._id) }}>Continue</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

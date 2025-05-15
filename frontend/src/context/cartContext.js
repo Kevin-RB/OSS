@@ -4,6 +4,8 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(getCartFromSession());
+    const TAX_RATE = 0.07; // 7% tax rate
+    const TAX_RATE_STRING = (TAX_RATE * 100).toFixed(0) + "%";
 
     useEffect(() => {
         window.sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -56,15 +58,29 @@ export const CartProvider = ({ children }) => {
     }
 
     function getCartTotal() {
-        return cart.reduce((acc, item) => acc + item.total, 0);
+        const cartTotal = cart.reduce((acc, item) => acc + item.total, 0);
+        const tax = calculateTax(cartTotal, TAX_RATE);
+        const taxedTotal = cartTotal + tax;
+        return taxedTotal;
+    }
+
+    function getCartNetTotal() {
+        const cartTotal = cart.reduce((acc, item) => acc + item.total, 0);
+        return cartTotal;
+    }
+
+    function getTaxedTotal() {
+        const cartTotal = cart.reduce((acc, item) => acc + item.total, 0);
+        const tax = calculateTax(cartTotal, TAX_RATE);
+        return tax;
     }
 
     function clearCart() {
         setCart([]);
-    }   
+    }
 
     return (
-        <CartContext.Provider value={{ increaseQuantity, decreaseQuantity, addToCart, removeFromCart, cart, getCartTotal, clearCart }}>
+        <CartContext.Provider value={{ increaseQuantity, decreaseQuantity, addToCart, removeFromCart, cart, getCartTotal, getCartNetTotal, clearCart, getTaxedTotal ,TAX_RATE_STRING, TAX_RATE }}>
             {children}
         </CartContext.Provider>
     );
@@ -75,4 +91,11 @@ export const useCart = () => useContext(CartContext);
 function getCartFromSession() {
     const cart = window.sessionStorage.getItem('cart');
     return cart ? JSON.parse(cart) : [];
+}
+
+function calculateTax(total, taxRate) {
+    if (total === 0) {
+        return 0;
+    }
+    return total * taxRate;
 }

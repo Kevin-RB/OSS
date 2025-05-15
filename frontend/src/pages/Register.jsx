@@ -119,11 +119,11 @@ const Register = () => {
             Creat Account →
           </Button>
 
-          {/* Sign up button */}
+          {/* Login button */}
           <p className="mt-4 text-sm text-gray-500">
-            Don’t have an account?
-            <a href="/register" className="text-blue-600 hover:underline">
-              Sign up
+            Already have an account?
+            <a href="/login" className="text-blue-600 hover:underline">
+              Login
             </a>
           </p>
         </form>

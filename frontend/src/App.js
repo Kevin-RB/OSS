@@ -29,14 +29,14 @@ function App() {
     <Router>
       <Routes>
         <Route index element={<Navigate to={"/login"} />} />
-        
+
         {/* Auth routes - outside of main Layout */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<p>Unauthorized access!</p>} />
         </Route>
-        
+
         {/* Protected routes - with main Layout */}
         <Route element={<LayoutWrapper />}>
           <Route
@@ -64,7 +64,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/tasks" element={<Tasks />} />
-          </Route>
+        </Route>
       </Routes>
     </Router>
   );
