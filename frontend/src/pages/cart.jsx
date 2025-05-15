@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/cartContext";
+import { Button } from "../components/ui/button";
+import { Trash } from "lucide-react";
 
 export function Cart() {
-    const { cart, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+    const { cart, increaseQuantity, decreaseQuantity, removeFromCart, getCartTotal, getCartNetTotal, TAX_RATE_STRING, getTaxedTotal } = useCart();
+    const netTotal = getCartNetTotal();
+    const tax = getTaxedTotal();
+    const total = getCartTotal();
 
     function handleIncreaseQuantity(product) {
         increaseQuantity(product);
@@ -17,74 +22,78 @@ export function Cart() {
     }
 
     return (
-        <section className="container mt-6 mx-auto max-w-[1200px] relative space-y-6">
-            <div className="shadow-md rounded-lg overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-16 py-3">
-                                <span className="sr-only">Image</span>
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Product
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Qty
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Price
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <section className="container mt-6 mx-auto max-w-[1200px] relative space-y-6 bg-white rounded-lg p-6">
+            <div className="mx-auto max-w-2xl">
+                <table className="w-full text-sm text-left rtl:text-right">
+                    <tbody className="divide-y divide-gray-200">
                         {cart?.map((product) => (
-                            <tr key={product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td className="p-4">
-                                    <img src={product.imageUrl} className="size-16 rounded-md object-cover md:size-32 max-w-full max-h-full" alt={product.name} />
-                                </td>
-                                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    {product.name}
+                            <tr key={product._id}>
+                                <td className="whitespace-nowrap py-4 md:w-[384px]">
+                                    <div className="flex items-center gap-4">
+                                        <Link to={`/product/${product._id}`} className="flex items-center aspect-square w-16 h-16 shrink-0">
+                                            <img className="h-full w-full max-h-full object-cover rounded-md" src={product.imageUrl} alt={product.name} />
+                                        </Link>
+                                        <Link to={`/product/${product._id}`} class="hover:underline">{product.name}</Link>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center">
-                                        <button onClick={() => { handleDecreaseQuantity(product) }} className="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                                        <Button onClick={() => { handleDecreaseQuantity(product) }} size="icon" variant="secondary">
                                             <span className="sr-only">Quantity button</span>
                                             <svg className="w-3 h-3" aria-hidden="true" viewBox="0 0 18 2">
                                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16" />
                                             </svg>
-                                        </button>
-                                        <div>
-                                            <span className="text-center bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                {product.quantity}
-                                            </span>
-                                        </div>
-                                        <button onClick={() => { handleIncreaseQuantity(product) }} className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                                        </Button>
+                                        <td className="p-4 text-center text-sm font-normal text-gray-900 min-w-10">{product.quantity}</td>
+                                        <Button onClick={() => { handleIncreaseQuantity(product) }} size="icon" variant="secondary">
                                             <span className="sr-only">Quantity button</span>
                                             <svg className="w-3 h-3" aria-hidden="true" viewBox="0 0 18 18">
                                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16" />
                                             </svg>
-                                        </button>
+                                        </Button>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    ${product.total}.00
-                                </td>
+                                <td class="p-4 text-right text-base font-bold text-gray-900">${product.total.toFixed(2)}</td>
                                 <td className="px-6 py-4">
-                                    <button onClick={() => { handleRemoveFromCart(product) }} className="font-medium text-red-600 dark:text-red-500">Remove</button>
+                                    <Button onClick={() => { handleRemoveFromCart(product) }} variant="ghost" size="icon" className="hover:text-red-500">
+                                        <Trash className="w-4 h-4" />
+                                        <span className="sr-only">Remove item</span>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                <section className="divide-y divide-gray-200 mt-6">
+                    <h2 className="font-bold">Order summary</h2>
+                    <section>
+                        <div className="flex items-center justify-between mt-4">
+                            <span className="text-sm font-medium text-gray-900">subtotal</span>
+                            <span className="text-sm font-bold text-gray-900">${netTotal.toFixed(2)}</span>
+                        </div>
+                        <div className="flex items-center justify-between mt-4">
+                            <span className="text-sm font-medium text-gray-900">tax <i className="text-xs text-gray-500">{TAX_RATE_STRING} rate</i></span>
+                            <span className="text-sm font-bold text-gray-900">${tax.toFixed(2)}</span>
+                        </div>
+                    </section>
+                    <div className="flex items-center justify-between mt-4">
+                        <span className="text-lg font-bold text-gray-900">Total</span>
+                        <span className="text-sm font-bold text-gray-900">${total.toFixed(2)}</span>
+                    </div>
+                </section>
+                <div className="flex items-center justify-between mt-4 space-x-2">
+                    <Link to={"/product"} className="w-full" >
+                        <Button className="w-full" variant="outline">
+                            Continue shopping
+                        </Button>
+                    </Link>
+                    <Link to={"/cart/checkout"} className="w-full">
+                        <Button className="w-full">
+                            Proceed to checkout
+                        </Button>
+                    </Link>
+                </div>
             </div>
-            <Link to={"/cart/checkout"} >
-                <button className="px-3 py-2 mt-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Proceed to checkout
-                </button>
-            </Link>
         </section>
     );
 }
