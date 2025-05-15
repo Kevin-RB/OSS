@@ -1,5 +1,25 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose
+} from "../components/ui/dialog"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table"
+import { Button } from "../components/ui/button"
+import { Trash } from "@mynaui/icons-react";
 
 export function ProductAdminPannel({ productList, onDeleteProduct }) {
     const modalRef = useRef(null);
@@ -11,8 +31,59 @@ export function ProductAdminPannel({ productList, onDeleteProduct }) {
     }
 
     return (
-        <section>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+            <Dialog>
+            <div className="overflow-x-auto border rounded-md shadow-sm bg-white container">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead>Product name</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>ImageUrl</TableHead>
+                    <TableHead>Action</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {productList?.map((product) => (
+                        <TableRow>
+                        <TableCell>{product.name}</TableCell>
+                        <TableCell>${product.price}.00</TableCell>
+                        <TableCell>{product.description}</TableCell>
+                        <TableCell>{product.imageUrl}</TableCell>
+                        <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                                <Button variant="outline" size="sm">
+                                Edit
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                Delete
+                                </Button>
+                            </div>
+                        </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            </div>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Delete Account?</DialogTitle>
+                    <DialogDescription>
+                        Deleting your account is irreversible and will erase all your data. This action cannot be undone.
+                    </DialogDescription>
+                    </DialogHeader>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button type="button" variant="outline">
+                        Cancel
+                        </Button>
+                    </DialogClose>
+                    <Button variant="destructive" type="submit">Continue</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+            /*        <section> <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -73,7 +144,7 @@ export function ProductAdminPannel({ productList, onDeleteProduct }) {
                     <button className="w-full px-2 py-1 bg-red-500 text-white rounded-md" onClick={() => { deleteProduct(product._id) }}>Delete</button>
                     <button className="w-full px-2 py-1 text-zinc-600 border border-zinc-700 rounded-md" onClick={() => { modalRef.current.close() }}>Cancel</button>
                 </div>
-            </dialog>
-        </section>
+            </dialog></section> */
+        
     )
 }
