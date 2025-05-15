@@ -11,11 +11,13 @@ import {
   BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
 import { Slash } from "lucide-react"
+import { useToast } from "../context/toastContext";
 
 export function OrderUpdate() {
     const { id } = useParams()
     const navigate = useNavigate()
     const [orders, setOrders] = useState([]);
+    const { addToast } = useToast();
 
     useEffect(() => {
         async function getOrders() {
@@ -35,10 +37,20 @@ export function OrderUpdate() {
     async function onSubmit(data) {
         try {
             await axiosAuthInstance.put(`/api/order`, data)
-            window.alert('Order updated!')
-            navigate(0)
+            addToast({
+                title: "Success",
+                description: "Order updated!",
+                variant: "success",
+                duration: 3000,
+            });
+            navigate("/order-management")
         } catch (error) {
-            window.alert('Error updating order status')
+            addToast({
+                title: "Error",
+                description: "Error updating order status",
+                variant: "error",
+                duration: 3000,
+            });
         }
     }
 
