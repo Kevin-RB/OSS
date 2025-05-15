@@ -74,7 +74,7 @@ export function OrderAdminPannel() {
                                 Delivered: "success",
                             }[order.orderStatus] || "outline"
                             return (
-                            <TableRow>
+                            <TableRow key={order._id}>
                             <TableCell>{order._id}</TableCell>
                             <TableCell><Badge variant={statusVariant}>{order.orderStatus}</Badge></TableCell>
                             <TableCell>{order.shippingAddress}</TableCell>
