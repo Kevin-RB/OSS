@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,16 +21,24 @@ import { Checkout } from "./pages/checkout";
 import { OrderAdminPannel } from "./components/order-management";
 import { OrderUpdate } from "./components/order-update";
 import { UserAdminPannel } from "./components/user-management";
-import Layout from "./components/Layout";
+import { AuthLayout } from "./components/layout/authLayout";
+import { LayoutWrapper } from "./components/layout/Layout";
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route index element={<Navigate to={"/login"} />} />
+      <Routes>
+        <Route index element={<Navigate to={"/login"} />} />
+        
+        {/* Auth routes - outside of main Layout */}
+        <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/unauthorized" element={<p>Unauthorized access!</p>} />
+        </Route>
+        
+        {/* Protected routes - with main Layout */}
+        <Route element={<LayoutWrapper />}>
           <Route
             element={
               <ProtectedRoute allowedRoles={[roles.user, roles.admin]} />
@@ -56,9 +65,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/unauthorized" element={<p>Un authorized access!</p>} />
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </Router>
   );
 }

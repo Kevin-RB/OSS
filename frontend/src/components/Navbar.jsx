@@ -11,6 +11,7 @@ const Navbar = () => {
     logout();
     navigate('/login');
   };
+
   const rolesForAdminRoutes = [roles.admin];
   const isAdmin = user?.roles.some((role) => rolesForAdminRoutes.includes(role));
 
@@ -18,7 +19,7 @@ const Navbar = () => {
     <header className="w-full border-b bg-white py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/" className="text-xl font-bold text-black">
+        <Link to="product" className="text-xl font-bold text-black">
           Gahokef
         </Link>
 

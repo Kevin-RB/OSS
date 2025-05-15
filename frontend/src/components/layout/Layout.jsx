@@ -1,5 +1,6 @@
-import { ToastContextProvider } from "../context/toastContext";
-import Navbar from "../components/Navbar";
+import { Outlet } from "react-router-dom";
+import { ToastContextProvider } from "../../context/toastContext";
+import Navbar from "../Navbar";
 
 const Layout = ({ children }) => {
   return (
@@ -22,4 +23,11 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+// Layout wrapper for authenticated routes
+export const LayoutWrapper = () => {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+};
