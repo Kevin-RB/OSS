@@ -97,7 +97,7 @@ export function UserAdminPannel() {
                         </TableCell>
                         <TableCell>
                             <DialogTrigger>
-                            <Button variant="destructive"><Trash /></Button>
+                            <Button size="icon" variant="destructive"><Trash/></Button>
                             </DialogTrigger>
                         </TableCell>
                         </TableRow>

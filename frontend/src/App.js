@@ -46,9 +46,8 @@ function App() {
                 element={<ProductCreate />}
               />
               <Route path="/product/admin/update" element={<ProductEdit />} />
-              <Route path="/order-management" element={<OrderAdminPannel />}>
-                <Route path=":id" element={<OrderUpdate />} />
-              </Route>
+              <Route path="/order-management" element={<OrderAdminPannel />} />
+              <Route path="/order-management/:id" element={<OrderUpdate />} />
               <Route path="/user-management" element={<UserAdminPannel />} />
             </Route>
           </Route>
@@ -56,7 +55,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/unauthorized" element={<p>Un authorized access!</p>} />
+          <Route path="/unauthorized" element={<p>Unauthorized access!</p>} />
         </Routes>
       </Layout>
     </Router>

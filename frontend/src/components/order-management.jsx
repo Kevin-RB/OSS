@@ -20,6 +20,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
+import { ArrowLongRight } from "@mynaui/icons-react";
 
 export function OrderAdminPannel() {
     const [orders, setOrders] = useState([]);
@@ -53,33 +54,40 @@ export function OrderAdminPannel() {
             </Breadcrumb>
             <div className="overflow-x-auto border rounded-md shadow-sm bg-white container">
                 <Table>
-                <TableHeader>
-                    <TableRow>
-                    <TableHead>OrderID</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>City</TableHead>
-                    <TableHead>State</TableHead>
-                    <TableHead>Zip</TableHead>
-                    <TableHead>Action</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {orders?.map((order) => (
+                    <TableHeader>
                         <TableRow>
-                        <TableCell>{order._id}</TableCell>
-                        <TableCell><Badge>{order.orderStatus}</Badge></TableCell>
-                        <TableCell>{order.shippingAddress}</TableCell>
-                        <TableCell>{order.shippingCity}</TableCell>
-                        <TableCell>{order.shippingState}</TableCell>
-                        <TableCell>{order.shippingZip}</TableCell>
-                        <TableCell><Link to="/user-management" className="hover:underline">
-                            View
-                        </Link></TableCell>
+                        <TableHead>OrderID</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Address</TableHead>
+                        <TableHead>City</TableHead>
+                        <TableHead>State</TableHead>
+                        <TableHead>Zip</TableHead>
+                        <TableHead>Action</TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {orders?.map((order) => {
+                            const statusVariant = {
+                                Pending: "secondary",
+                                Canceled: "destructive",
+                                Shipped: "default",
+                                Delivered: "success",
+                            }[order.orderStatus] || "outline"
+                            return (
+                            <TableRow>
+                            <TableCell>{order._id}</TableCell>
+                            <TableCell><Badge variant={statusVariant}>{order.orderStatus}</Badge></TableCell>
+                            <TableCell>{order.shippingAddress}</TableCell>
+                            <TableCell>{order.shippingCity}</TableCell>
+                            <TableCell>{order.shippingState}</TableCell>
+                            <TableCell>{order.shippingZip}</TableCell>
+                            <TableCell><Link to={order._id} className="hover:underline">
+                                View <ArrowLongRight className="inline" size="16"/>
+                            </Link></TableCell>
+                            </TableRow>
+                        )})}
+                    </TableBody>
+                </Table>
             </div>
         </section>
         // <section className="container mt-6 mx-auto max-w-[1200px]  h-full w-full flex flex-col gap-4">

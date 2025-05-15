@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
       <Navbar />
 
       {/* Main content */}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8">
+      <main className="items-center justify-center px-4 sm:px-6 md:px-8">
         <div className="w-full rounded-lg p-6">{children}</div>
       </main>
 

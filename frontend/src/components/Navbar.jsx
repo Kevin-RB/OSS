@@ -17,12 +17,10 @@ const Navbar = () => {
   return (
     <header className="w-full border-b bg-white py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
-        {/* Logo */}
         <Link to="/" className="text-xl font-bold text-black">
           Gahokef
         </Link>
 
-        {/* Navigation */}
         <nav className="flex items-center space-x-4 text-sm">
           {user ? (
             <>
