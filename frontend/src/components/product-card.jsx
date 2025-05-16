@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/cartContext";
 import { useToast } from "../context/toastContext";
 
-import { ShoppingCart } from "lucide-react";
-import { Card, CardTitle, CardContent } from "./ui/card";
+import { Car, ShoppingCart } from "lucide-react";
+import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 
 export default function ProductCard({ imageUrl, name, price, id }) {
@@ -24,26 +24,21 @@ export default function ProductCard({ imageUrl, name, price, id }) {
 
   return (
     <Card className="w-full h-full">
-      <div className="p-4">
-        <div className="rounded-lg aspect-square flex items-center justify-center overflow-hidden">
+      <CardHeader >
+        <div className="rounded-lg aspect-square overflow-hidden">
           {imageUrl ? (
-            <>
-              <Link to={`${id}`} relative="path">
-                <div className=" rounded-md size-64 w-full overflow-hidden">
-                  <img
-                    className="h-full w-full object-contain"
-                    src={imageUrl}
-                    alt={name}
-                  />
-                </div>
-              </Link>
-            </>
+            <Link to={`${id}`} relative="path">
+              <img
+                className="object-cover object-top w-full h-full"
+                src={imageUrl}
+                alt={name}
+              />
+            </Link>
           ) : (
             <ShoppingCart className="w-12 h-12 text-gray-400" />
           )}
         </div>
-      </div>
-
+      </CardHeader>
       <CardContent className="pt-0 space-y-4">
         <div className="min-h-[48px]">
           <CardTitle className="text-lg font-semibold leading-snug">
