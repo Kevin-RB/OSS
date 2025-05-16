@@ -78,7 +78,7 @@ export function UserAdminPannel() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage href="/user-management">Order Management</BreadcrumbPage>
+                        <BreadcrumbPage href="/user-management">User Management</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
