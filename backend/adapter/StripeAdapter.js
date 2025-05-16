@@ -2,11 +2,11 @@
 const PaymentAdapter = require('./PaymentAdapter');
 
 class StripeAdapter extends PaymentAdapter {
-  constructor(apiKey) {
+  constructor() {
     super();
     // In a real implementation, we would initialize the Stripe SDK here
 
-    console.log('Stripe adapter initialized with API key:', apiKey);
+    console.log('Stripe adapter initialized');
   }
 
   async processPayment(payment) {
