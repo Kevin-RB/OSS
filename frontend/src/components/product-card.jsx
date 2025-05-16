@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/cartContext";
 import { useToast } from "../context/toastContext";
 
-import { Car, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 

@@ -2,13 +2,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { roles } from '../utils/roles';
 import { Button } from "../components/ui/button"
+import { useToast } from '../context/toastContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const handleLogout = () => {
     logout();
+    addToast({
+      title: "Success",
+      description: "Successfully logged out.",
+      variant: "success",
+      duration: 3000,
+    });
     navigate('/login');
   };
 
