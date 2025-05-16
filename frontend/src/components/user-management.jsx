@@ -1,40 +1,39 @@
 import { useEffect, useState } from "react";
 import { axiosAuthInstance } from "../axiosConfig";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogClose
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+    DialogClose
 } from "../components/ui/dialog"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "../components/ui/table"
 import { Badge } from "../components/ui/badge"
 import { Button } from "../components/ui/button"
 import { Trash } from "@mynaui/icons-react";
-import { Slash } from "lucide-react"
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
+import { SectionTitle } from "./section-title";
 import { useToast } from "../context/toastContext";
 
 export function UserAdminPannel() {
     const [users, setUsers] = useState([]);
-    const [user, setUser] = useState();
     const { addToast } = useToast();
 
     async function deleteUser(id) {
@@ -42,14 +41,19 @@ export function UserAdminPannel() {
             await axiosAuthInstance.delete(`/api/user/${id}`);
             addToast({
                 title: "Success",
-                description: "Account is deleted!",
+                description: "User deleted successfully.",
                 variant: "success",
                 duration: 3000,
             });
             setUsers(users.filter((user) => user._id !== id));
         } catch (error) {
-            console.error('Error deleting user:',);
-        } finally {
+            addToast({
+                title: "Error",
+                description:
+                    error.response.data?.message || "Failed to delete user. Please try again.",
+                variant: "error",
+                duration: 3000,
+            });
         }
     }
 
@@ -66,68 +70,68 @@ export function UserAdminPannel() {
     }, [])
 
     return (
-        <Dialog>
-            <Breadcrumb className="container my-8">
+        <section className="container mx-auto space-y-4 rounded-lg">
+            <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                        <BreadcrumbLink href="/product">Home</BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator>
-                    <Slash />
-                    </BreadcrumbSeparator>
+                    <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                    <BreadcrumbPage>User Management</BreadcrumbPage>
+                        <BreadcrumbPage href="/user-management">Order Management</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="overflow-x-auto border rounded-md shadow-sm bg-white container">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Roles</TableHead>
-                    <TableHead>Action</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {users?.map((user) => (
+            <SectionTitle title="User Management" />
+
+            <div className="mx-auto w-full overflow-x-auto bg-white border rounded-md p-4">
+                <Table>
+                    <TableHeader>
                         <TableRow>
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>
-                            <Badge>{user.role.map((role) => (
-                                <span>{role}</span>
-                                ))}</Badge>
-                        </TableCell>
-                        <TableCell>
-                            <DialogTrigger>
-                            <Button onClick={() => {setUser(user)}} size="icon" variant="destructive"><Trash/></Button>
-                            </DialogTrigger>
-                        </TableCell>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Roles</TableHead>
+                            <TableHead className="text-right">Action</TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {users?.map((user) => (
+                            <TableRow>
+                                <TableCell>{user.name}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>
+                                    <Badge>{user.role.map((role) => (
+                                        <span>{role}</span>
+                                    ))}</Badge>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <Dialog>
+                                        <DialogTrigger>
+                                            <Button variant="ghost" size="icon"><Trash /></Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Delete Account?</DialogTitle>
+                                                <DialogDescription>
+                                                    Deleting your account is irreversible and will erase all your data. This action cannot be undone.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter>
+                                                <DialogClose asChild>
+                                                    <Button type="button" variant="outline">
+                                                        Cancel
+                                                    </Button>
+                                                </DialogClose>
+                                                <Button variant="destructive" onClick={() => deleteUser(user._id)} type="submit">Continue</Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </div>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Delete Account?</DialogTitle>
-                    <DialogDescription>
-                        Deleting your account is irreversible and will erase all your data. This action cannot be undone.
-                    </DialogDescription>
-                    </DialogHeader>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button type="button" variant="outline">
-                        Cancel
-                        </Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                    <Button variant="destructive" type="submit" onClick={() => { deleteUser(user._id) }}>Continue</Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+        </section>
     )
 }

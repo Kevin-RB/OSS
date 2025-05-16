@@ -14,9 +14,12 @@ class StripeAdapter extends PaymentAdapter {
       console.log(`Processing payment of ${payment.amount} via Stripe`);
       
       // In a real implementation, we would call Stripe's API here
-      setTimeout(() => {
-        console.log('Payment processed successfully');
-      }, 2000);
+     await new Promise((resolve) => {
+       setTimeout(() => {
+         console.log('Payment processed successfully');
+         resolve();
+       }, 5000);
+     });
 
       // Mock successful payment
       const paymentResult = {

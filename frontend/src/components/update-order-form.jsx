@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import { Button } from "./ui/button";
 
 export function UpdateOrderForm({ order, onSubmit }) {
     const {
@@ -24,8 +25,8 @@ export function UpdateOrderForm({ order, onSubmit }) {
     })
 
     return (
-        <form className="max-w-sm mx-auto mb-4" onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="text-white mb-2 text-lg">Update status</h2>
+        <form className="max-w-sm mx-auto mb-4 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="mb-2 text-lg font-bold">Update status</h2>
             <Select onValueChange={(value) => setValue("orderStatus", value)} defaultValue={order.orderStatus}>
             <SelectTrigger>
                 <SelectValue placeholder={order.orderStatus} />
@@ -38,7 +39,7 @@ export function UpdateOrderForm({ order, onSubmit }) {
             </SelectContent>
             </Select>
             <p className="text-red-500">{errors?.orderStatus?.message}</p>
-            <button type="submit" className="w-full bg-blue-500 text-white rounded px-4 py-2 mt-4">Update</button>
+            <Button className="w-full" type="submit" >Update</Button>
         </form>
     )
 }

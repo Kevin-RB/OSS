@@ -1,4 +1,3 @@
-const ProductFactory = require('../factories/productFactory');
 const Product = require('../models/Product');
 const { productCreation } = require('../validation/product-validation');
 
@@ -11,7 +10,7 @@ class ProductService {
             return { success: false, type: 'validation', error: result.error.format() };
         }
 
-        const { name, price, description, imageUrl } = result.data;
+        const { name } = result.data;
         // check if the product already exists
         const productExists = await Product.findOne({ name });
         if (productExists) {
@@ -19,24 +18,25 @@ class ProductService {
         }
 
         // create the product
-        const product = await ProductFactory.createProduct(result.data);
+        const product = await Product.create(result.data);
         return {
             success: true,
             product: {
                 id: product.id,
                 name: product.name,
                 price: product.price,
+                description: product.description,
                 imageUrl: product.imageUrl,
-                type: product.type,
             }
         };
     }
 
     async getProducts(filter) {
-        if (filter?.name) {
-            return await Product.find({ name: { $regex: filter.name, $options: 'i' } });
+        const query = {};
+        if (filter?.name && filter.name !== '') {
+            query.name = { $regex: filter.name, $options: 'i' };
         }
-        return await Product.find({});
+        return await Product.find(query);
     }
 
     async getProductById(productId) {

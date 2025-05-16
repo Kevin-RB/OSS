@@ -13,9 +13,12 @@ class PayPalAdapter extends PaymentAdapter {
             console.log(`Processing payment of ${payment.amount} via PayPal`);
 
             // In a real implementation, we would call PayPal's API here
-            setTimeout(() => {
-                console.log('Payment processed successfully');
-            }, 2000);
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    console.log('Payment processed successfully');
+                    resolve();
+                }, 5000);
+            });
             // Mock successful payment
             const paymentResult = {
                 id: `paypal_${Date.now()}`,

@@ -62,12 +62,7 @@ describe('Create product function test', () => {
         chai.expect(createStub.calledWith({ ...req.body })).to.be.true;
 
         chai.expect(res.status.calledOnceWith(201)).to.be.true;
-        chai.expect(res.json.calledWith({
-            id: createdProduct.id,
-            name: createdProduct.name,
-            price: createdProduct.price,
-            imageUrl: createdProduct.imageUrl
-        })).to.be.true;
+        chai.expect(res.json.calledWith(createdProduct)).to.be.true;
     });
 
     it('should return 400 if product already exists', async function () {
