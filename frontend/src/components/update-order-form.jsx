@@ -33,7 +33,7 @@ export function UpdateOrderForm({ order, onSubmit }) {
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Canceled">Canceled</SelectItem>
+                <SelectItem value="Cancelled">Cancelled</SelectItem>
                 <SelectItem value="Shipped">Shipped</SelectItem>
                 <SelectItem value="Delivered">Delivered</SelectItem>
             </SelectContent>
