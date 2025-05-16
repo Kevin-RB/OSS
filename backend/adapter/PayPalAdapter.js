@@ -5,7 +5,7 @@ class PayPalAdapter extends PaymentAdapter {
     constructor() {
         super();
         // In a real implementation, we would initialize the PayPal SDK here
-        console.log('PayPal adapter initialized with client ID:');
+        console.log('PayPal adapter initialized');
     }
 
     async processPayment(payment) {

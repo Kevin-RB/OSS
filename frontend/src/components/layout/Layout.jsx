@@ -1,10 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { ToastContextProvider } from "../../context/toastContext";
 import Navbar from "../Navbar";
 
 const Layout = ({ children }) => {
   return (
-    <ToastContextProvider>
       <div className="min-h-screen flex flex-col bg-gray-50">
         {/* Navbar */}
         <Navbar />
@@ -19,7 +17,6 @@ const Layout = ({ children }) => {
           &copy; 2025 Gahokef
         </footer>
       </div>
-    </ToastContextProvider>
   );
 };
 
