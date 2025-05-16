@@ -43,14 +43,26 @@ export function ProductDetail() {
   return (
     <section className="flex justify-center mt-10">
       <div className="flex w-full max-w-3xl bg-white rounded-xl overflow-hidden">
-        {/* Image */}
-        <div className="w-1/2 flex items-center justify-center aspect-square">
+        {/* Image container with background blur */}
+        <div className="w-1/2 flex items-center justify-center aspect-square relative overflow-hidden">
           {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="object-contain w-full h-full"
-            />
+            <>
+              {/* Blurred background image */}
+              <div className="absolute inset-0">
+                <img
+                  src={product.imageUrl}
+                  alt=""
+                  className="w-full h-full object-cover blur-lg opacity-50"
+                  aria-hidden="true"
+                />
+              </div>
+              {/* Main image */}
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="object-contain w-full h-full relative z-10"
+              />
+            </>
           ) : (
             <span className="text-gray-400">No image</span>
           )}
