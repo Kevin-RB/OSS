@@ -39,4 +39,4 @@ class PaymentAdapterFactory {
     }
 }
 
-module.exports = PaymentAdapterFactory; 1
+module.exports = PaymentAdapterFactory;
