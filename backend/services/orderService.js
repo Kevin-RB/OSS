@@ -40,16 +40,27 @@ class OrderService {
             .populate('itemsInCart.productId');
     }
 
-    async updateOrderStatus(data) {
+    async getOrderById(id) {
+        // find the product by id
+        const order = await Order.findById(id)
+            .populate('itemsInCart.productId');
+        if (!order) {
+            return { success: false, type: 'not_found', message: 'Order not found' };
+        }
+        // return the product
+        return { success: true, order };
+    }
+
+    async updateOrderStatus(id, data) {
         // validate the request body
-        const result = orderUpdate.safeParse(data);
+        const result = orderUpdate.safeParse({ ...data, id });
         // if the validation fails, return a 400 response with the error message
         if (!result.success) {
             return { success: false, type: 'validation', error: result.error.format() };
         }
 
         // get the product details from the request body
-        const { id, orderStatus } = result.data;
+        const { orderStatus } = result.data;
 
         // find the product by id
         const order = await Order.findById(id);
