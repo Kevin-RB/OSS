@@ -82,7 +82,7 @@ export function OrderAdminPannel() {
                                     <TableCell>{order.shippingCity}</TableCell>
                                     <TableCell>{order.shippingState}</TableCell>
                                     <TableCell>{order.shippingZip}</TableCell>
-                                    <TableCell><Link to={order._id} className="hover:underline">
+                                    <TableCell className="text-right"><Link to={order._id} className="hover:underline">
                                         View <ArrowLongRight className="inline" size="16" />
                                     </Link></TableCell>
                                 </TableRow>
