@@ -6,6 +6,7 @@ import { useToast } from "../context/toastContext";
 import { ShoppingCart } from "lucide-react";
 import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
+import { formatCurrency } from "../utils/intl";
 
 export default function ProductCard({ imageUrl, name, price, id }) {
   const { addToCart, cart } = useCart();
@@ -23,7 +24,7 @@ export default function ProductCard({ imageUrl, name, price, id }) {
   };
 
   return (
-    <Card className="w-full h-full">
+    <Card className="w-full h-full flex-col">
       <CardHeader >
         <div className="rounded-lg aspect-square overflow-hidden">
           {imageUrl ? (
@@ -38,20 +39,18 @@ export default function ProductCard({ imageUrl, name, price, id }) {
             <ShoppingCart className="w-12 h-12 text-gray-400" />
           )}
         </div>
+        <CardTitle className="text-lg font-semibold leading-snug min-h-[3rem]">
+          {name}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0 space-y-4">
-        <div className="min-h-[48px]">
-          <CardTitle className="text-lg font-semibold leading-snug">
-            {name}
-          </CardTitle>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold">${price}</span>
+      <CardContent className="flex flex-col gap-2 grow">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <span className="text-lg font-bold">{formatCurrency(price)}</span>
           <Button
             onClick={handleAddToCart}
             disabled={isProductInCart}
             className={isProductInCart ? "bg-zinc-400" : ""}
+            size="sm"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
             {isProductInCart ? "Added" : "Add to cart"}
