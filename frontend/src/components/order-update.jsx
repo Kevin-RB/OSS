@@ -10,21 +10,20 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "../components/ui/breadcrumb"
-import { Slash } from "lucide-react"
 import { useToast } from "../context/toastContext";
 import { Table, TableBody, TableCell, TableRow } from "./ui/table";
 
 export function OrderUpdate() {
     const { id } = useParams()
     const navigate = useNavigate()
-    const [orders, setOrders] = useState([]);
+    const [order, setOrder] = useState([]);
     const { addToast } = useToast();
 
     useEffect(() => {
         async function getOrders() {
             try {
-                const response = await axiosAuthInstance.get('/api/order');
-                setOrders(response.data);
+                const response = await axiosAuthInstance.get(`/api/order/${id}`);
+                setOrder(response.data);
             } catch (error) {
                 window.alert('Error fetching orders');
             }
@@ -32,12 +31,11 @@ export function OrderUpdate() {
         getOrders()
     }, [])
 
-    const order = orders.find((order) => order._id === id)
     if (!order) return (<p>Order not found</p>)
 
     async function onSubmit(data) {
         try {
-            await axiosAuthInstance.put(`/api/order`, data)
+            await axiosAuthInstance.put(`/api/order/${id}`, data)
             addToast({
                 title: "Success",
                 description: "Order updated!",

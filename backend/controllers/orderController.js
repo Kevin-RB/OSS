@@ -31,9 +31,27 @@ const getOrders = async (req, res) => {
     }
 };
 
+const getOrderById = async (req, res) => {
+    try {
+        const { success, order, message } = await orderService.getOrderById(req.params.id);
+        if (!success) {
+            return res.status(404).json({ message });
+        }
+        res.status(200).json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const updateOrder = async (req, res) => {
     try {
-        const result = await orderService.updateOrderStatus(req.body);
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ message: 'Order ID is required' });
+        }
+
+        const result = await orderService.updateOrderStatus(id, req.body);
+
         if (!result.success) {
             if (result.type === 'validation') {
                 return res.status(400).json({ message: 'Validation error', error: result.error });
@@ -49,4 +67,4 @@ const updateOrder = async (req, res) => {
     }
 };
 
-module.exports = { createOrder, getOrders, updateOrder };
+module.exports = { createOrder, getOrders, updateOrder, getOrderById };

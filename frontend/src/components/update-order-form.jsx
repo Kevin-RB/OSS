@@ -12,7 +12,6 @@ import { Button } from "./ui/button";
 
 export function UpdateOrderForm({ order, onSubmit }) {
     const {
-        register,
         handleSubmit,
         setValue,
         formState: { errors },
@@ -27,13 +26,15 @@ export function UpdateOrderForm({ order, onSubmit }) {
     return (
         <form className="max-w-sm mx-auto mb-4 space-y-2" onSubmit={handleSubmit(onSubmit)}>
             <h2 className="mb-2 text-lg font-bold">Update status</h2>
-            <Select onValueChange={(value) => setValue("orderStatus", value)} defaultValue={order.orderStatus}>
+            <Select onValueChange={(value) => {
+                setValue("orderStatus", value)  
+            }}>
             <SelectTrigger>
                 <SelectValue placeholder={order.orderStatus} />
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Cancelled">Cancelled</SelectItem>
+                <SelectItem value="Canceled">Canceled</SelectItem>
                 <SelectItem value="Shipped">Shipped</SelectItem>
                 <SelectItem value="Delivered">Delivered</SelectItem>
             </SelectContent>
